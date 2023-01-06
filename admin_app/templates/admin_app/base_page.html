@@ -1,0 +1,205 @@
+{% extends 'admin_app/base.html' %}
+
+{% block page %}
+<div class="content-wrapper">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row" style="justify-content: end">
+            {% block pages %}
+            {% endblock %}
+            <div class="col-md-3">
+                <table class="table table-bordered text-center">
+                    <tbody>
+                    <tr>
+                        <td id="set_uk">
+                            <button style="background-color: white;" type="button" onclick="choose_lan('uk')" class="btn btn-block btn-default">Украинский</button>
+                        </td>
+                        <td id="set_ru" style="background-color: #5f86ad;">
+                            <button style="background-color: white;" type="button" onclick="choose_lan('ru')" class="btn btn-block btn-default">Русский</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row" style="padding: 1rem;">
+            <div class="col-md-1">
+                <label>{{name}}</label>
+            </div>
+            {% block name %}
+
+            <div style="" class="col-md-3 lan_ru">
+                {{form.name_ru}}
+                <p style="padding-left: 1rem; color: crimson;">{{report}}</p>
+
+            </div>
+            <div style="display:none;" class="col-md-3 lan_uk">
+                {{form.name_uk}}
+                <p style="padding-left: 1rem; color: crimson;">{{report}}</p>
+
+            </div>
+            {% endblock %}
+        </div>
+        <div class="row" style="padding: 1rem;">
+            <div class="col-md-1">
+                <label>{{descript}}</label>
+            </div>
+            <div style="" class="col-md-5 lan_ru">
+                {{form.description_ru}}
+            </div>
+            <div style="display:none;" class="col-md-5 lan_uk">
+                {{form.description_uk}}
+            </div>
+        </div>
+        {% block cinema_hall %}
+        {% endblock %}
+        <div class="row" style="padding: 1rem; align-items: center;">
+            {% if not cinema_hall %}
+            <div class="col-md-1">
+                <label>Главная картинка</label>
+            </div>
+            {% else %}
+            <div class="col-md-1">
+                <label>{{cinema_hall}}</label>
+            </div>
+            {% endif %}
+
+            <div class="col-md-2" id="base">
+                <img id='mainImg' class="null" src="/static/admin_app/image/add_img.png" title="add" alt=""
+                     width="100%">
+            </div>
+
+            <div class="col-md-3" style="">
+                <table class="table table-bordered text-center">
+                    <tbody>
+                    <tr>
+                        <td>
+                            {{form.image}}
+                            <button onclick="upload()" type="button" class="btn btn-block btn-default">Загрузить
+                            </button>
+
+                        </td>
+                        <td>
+                            <button onclick="remove()" type="button" class="btn btn-block btn-default">Удалить</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="content" style="padding: 1rem;">
+            <label>Галлерея картинок</label>
+            <div class="row">
+                <div class="col-md-2">
+
+                    <label>Размер: 1000x190</label>
+
+
+                    <button id="addForm" type="button" class="btn btn-block btn-default" style="margin-top: 2rem">
+                        Добавить
+                    </button>
+                </div>
+                <!-- -->
+
+                <div class="col-md-9">
+
+                    {% if gallery_formset %}
+                    {{gallery_formset.management_form}}
+                    <div class="row" id="imgGallery">
+                        {% for form in gallery_formset %}
+                        <div class="ingredient_form">
+                            <div style="display: none;">
+                                {{form}}
+                            </div>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div id="empty-form" class="col-md-3"
+                         style="justify-content: center; align-content: center; align-items: center; display: none;">
+                        <div class="card shadow-sm" style="align-items: center;">
+                            <div style="display: none;">
+                                {{gallery_formset.empty_form}}
+                            </div>
+                            <img src="/static/admin_app/image/add_img.png" class="imgIn" alt="" width="200px"
+                                 height="200px">
+                            <button onclick="addImage(this)" type="button" class="btn btn-block btn-default">Загрузить
+                            </button>
+                        </div>
+                        <div style="position: absolute; top: -13%; left: 85%; z-index: 1;">
+                            <button onclick="remImg(this)" type="button" class="btn">
+                                <img src="/static/admin_app/image/remoove.png" alt="" width="50px" height="50px">
+                            </button>
+                        </div>
+                    </div>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% block hall_list %}
+        {% endblock %}
+        {% block movie %}
+        {% endblock %}
+        {% block news_promo %}
+        {% endblock %}
+
+        {% block page_date %}
+        {% endblock %}
+        <div class="row" style="padding: 1rem;">
+            <div class="col-md-1">
+                <label>SEO блок:</label>
+            </div>
+            <div class="col" style="padding-top: 1rem;">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>URL: </label>
+                    </div>
+                    <div class="col-md-5">
+                        {{seo_form.url}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Title:</label>
+                    </div>
+                    <div class="col-md-5">
+                        {{seo_form.title}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Keywords:</label>
+                    </div>
+                    <div class="col-md-5">
+                        {{seo_form.keywords}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Description:</label>
+                    </div>
+                    <div class="col-md-5">
+                        {{seo_form.description}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding: 1rem; justify-content: space-evenly;">
+            <div class="col-md-2">
+                <td>
+                    <button type="submit" class="btn btn-block btn-default">Сохранить</button>
+                </td>
+
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+
+
+</script>
+{% endblock %}

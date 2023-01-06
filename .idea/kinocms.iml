@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/admin_app/static/admin_app/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/media/images" />
+      <excludeFolder url="file://$MODULE_DIR$/media/mailing" />
+      <excludeFolder url="file://$MODULE_DIR$/media/templates" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.10 (KinoCMS)" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="PackageRequirementsSettings">
+    <option name="versionSpecifier" value="Don't specify version" />
+    <option name="keepMatchingSpecifier" value="false" />
+  </component>
+  <component name="PyDocumentationSettings">
+    <option name="format" value="PLAIN" />
+    <option name="myDocStringFormat" value="Plain" />
+  </component>
+</module>

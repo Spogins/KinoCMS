@@ -1,0 +1,66 @@
+{% extends 'cinema_app/base.html' %}
+{%load static%}
+{% block content %}
+<div class="row" style="width: 90%; margin-left: auto; margin-right: auto;">
+    <img style="width: 100%; height: 100%; padding:0px" src="{% static 'cinema_app/images/cinemas.png' %}"
+         alt="">
+</div>
+<div class="row"
+     style="padding:1rem; background-color: #343a40; width: 90%; margin-left: auto; margin-right: auto; display: flex; justify-content: center;">
+    <div class="col" style="display: flex;flex-direction: column;justify-content: space-between;">
+        <div class="row" style="margin-top: 1rem;">
+            {% for promo in promotions %}
+
+            <div class="col" style="display: flex; margin-top: 1rem; margin-bottom: 1rem;">
+
+                <div class="card" style="width: 22rem; background-color: #ffffff00; border-color:#ffffff00; ">
+                    <a href="{% url 'promo_card' promo.id %}" style="display: contents;">
+                        <img src={{promo.image.url}} alt="" height="100%" width="100%">
+                    </a>
+                    <div class="card-body" style="display: flex; flex-direction: column;">
+                        <div class="col" style="color: aliceblue;">
+                            <h5>{{promo.name}}</h5>
+                        </div>
+                        <div class="col" style="color: aliceblue;">
+                            <h5>{{promo.post_date}}</h5>
+                        </div>
+                        <div class="row">
+
+                            <div class="col" style="display: flex; justify-content: center; color: aliceblue;">
+                                <span>{{promo.description}}</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="col">
+                {% if pages %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {%for p in promotions.paginator.page_range %}
+                        <li class="page-item"><a class="page-link" href="?page={{p}}">{{p}}</a></li>
+                        {%endfor%}
+                    </ul>
+                </nav>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+    <div class="col-2" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <div class="row">
+            <div class="col">
+                <img style="width: 100%; height: 100%" src="{% static 'cinema_app/images/cinema_ads.png' %}"
+                     alt="">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

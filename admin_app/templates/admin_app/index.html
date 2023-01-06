@@ -1,0 +1,124 @@
+{% extends 'admin_app/base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+    <section class="content" style="padding:2rem;">
+        <div class="row">
+            <div class="col-2">
+                <div class="row">
+                    <canvas style="width: 100%;height: 100%; padding:0px;" id="chartPie"></canvas>
+                </div>
+            </div>
+            <div class="col" style="padding-left:2rem;">
+                <div class="row">
+                    <div class="col-lg-5 col-6">
+
+                        <div class="small-box bg-warning" style="    display: flex;justify-content: space-around;align-items: center;">
+                            <div class="inner">
+                                <h3>{{user_reg}}</h3>
+                                <p>Зарегистрированнх Пользователей</p>
+                            </div>
+                            <div class="icon">
+
+                                <iconify-icon style="font-size: 70px;" icon="ion:person-add"></iconify-icon>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <canvas style="width: 100%;height: 100%; padding:0px;" id="booking"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <canvas style="width: 100%;height: 100%; padding:0px;" id="line"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+var pie = document.getElementById('chartPie');
+var pie_data ={
+  labels: [
+    'Мужчины',
+    'Женщины'
+  ],
+  datasets: [{
+    label: 'Польззователей: ',
+    data: {{user_gender}},
+    backgroundColor: [
+      '#8ab4ff',
+      '#f777c5',
+    ],
+    hoverOffset: 4
+  }]
+};
+var pie_conf = {
+  type: 'pie',
+  data: pie_data,
+};
+new Chart(pie, pie_conf);
+var line_labels = []
+
+ {%for day in weak%}
+    line_labels.unshift("{{day|date:"d D"}}")
+ {%endfor%}
+
+var line = document.getElementById('line');
+var line_data = {
+  labels: line_labels,
+  datasets: [{
+    label: 'Статистика билетов',
+    data: {{ticket_range}},
+    fill: false,
+    borderColor: 'rgb(75, 192, 192)',
+    tension: 0.1
+  }]
+};
+var line_conf = {
+  type: 'line',
+  data: line_data,
+};
+new Chart(line, line_conf);
+
+var booking = document.getElementById('booking');
+var booking_data ={
+  labels: ['Бронирование', 'Покупка'],
+  datasets: [{
+    label: 'Бронирование и Покупка',
+    data: {{booking}},
+    backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 159, 64, 0.2)'
+    ],
+    borderColor: [
+      'rgb(255, 99, 132)',
+      'rgb(255, 159, 64)'
+    ],
+    borderWidth: 1
+  }]
+};
+var booking_conf = {
+  type: 'bar',
+  data: booking_data,
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  },
+};
+new Chart(booking, booking_conf);
+</script>
+{% endblock %}

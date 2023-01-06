@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Starter</title>
+    <!-- CSS only -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" crossorigin="anonymous">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" crossorigin="anonymous">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'admin_app/plugins/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_app/dist/css/adminlte.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_app/plugins/toastr/toastr.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_app/css/style_cms.css' %}">
+
+    <!-- JQWERY/JS -->
+    <script src="{% static 'admin_app/js/bg_banner_script.js' %}"></script>
+    <script src="{% static 'admin_app/plugins/toastr/toastr.min.js' %}"></script>
+
+
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    {% block header %}
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav ml-auto">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                    <i class="fas fa-user"></i>
+                    <span>{{request.user.username}}</span>
+                </a>
+            </li>
+            {%endif%}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout_user' %}" role="button">
+
+                    <i class="fas fa-power-off"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+    {% endblock %}
+
+    {% block sidebar %}
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="{% url 'home' %}" class="brand-link" style="display: flex; justify-content: center;">
+            <img src="/static/admin_app/image/logo.png" alt="" width="50%">
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item">
+                        <a href="{% url 'admin' %}" class="nav-link">
+                            <p>
+                                Статистика
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'banner' %}" class="nav-link">
+                            <p>
+                                Баннера/Слайды
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'movies' %}" class="nav-link">
+                            <p>
+                                Фильмы
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'cinemas_admin' %}" class="nav-link">
+                            <p>
+                                Кинотеатры
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'news' %}" class="nav-link">
+                            <p>
+                                Новости
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'events' %}" class="nav-link">
+                            <p>
+                                Акции
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'pages' %}" class="nav-link">
+                            <p>
+                                Страницы
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'users' %}" class="nav-link">
+                            <p>
+                                Пользователи
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'mailing' %}" class="nav-link">
+                            <p>
+                                Рассылка
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+    {% endblock %}
+
+
+
+
+    <!-- Content Wrapper. Contains page content -->
+    {% block page %}
+    {% endblock %}
+
+    {% block banner %}
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    <!-- /.content-wrapper -->
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+        <div class="p-3">
+            <h5>Title</h5>
+            <p>Sidebar content</p>
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+    {% block footer %}
+    <!-- Main Footer -->
+    <footer class="main-footer">
+        <!-- To the right -->
+        <div class="float-right d-none d-sm-inline">
+            Anything you want
+        </div>
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">KinoCMS</a>.</strong> All rights reserved.
+    </footer>
+    {% endblock %}
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="{% static 'admin_app/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'admin_app/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'admin_app/dist/js/adminlte.min.js' %}"></script>
+<!-- JQWERY/JS -->
+<script src="{% static 'admin_app/js/script.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="{% static 'admin_app/js/jquery.toast.js' %}"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+<script src="{% static 'admin_app/plugins/toastr/toastr.min.js' %}"></script>
+{% block script %}
+{% endblock %}
+<script>
+    $(document).ready(function () {
+        $('#table').DataTable({
+            columnDefs: [
+                { targets: 'no-sort', orderable: false }
+            ],
+            lengthMenu: [10, 20, 50, 100, 200],
+            language: {
+                "emptyTable": "В таблице нет записей",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "Showing 0 to 0 of 0 entries",
+                lengthMenu: "Показывать _MENU_ записей",
+                search: "Поиск:",
+                paginate: {
+                   sNext: 'Вперёд',
+                   sPrevious: 'Назад',
+                   sFirst: 'Первая',
+                   sLast: 'Последняя'
+                }
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends 'admin_app/show_base.html' %}
+
+{% block news_promo %}
+<div class="row" style="padding: 1rem;">
+    <div class="col-md-2">
+        <label>Статус</label>
+    </div>
+    <div class="col-md-4">
+        <div class="form-check form-switch">
+            {{form.active}}
+        </div>
+    </div>
+</div>
+<div class="row" style="padding: 1rem;">
+    <div class="col-md-2">
+        <label>Ссылка на видео</label>
+    </div>
+    <div class="col-md-4">
+        {{form.video}}
+    </div>
+</div>
+<div class="row" style="padding: 1rem;">
+    <div class="col-md-1">
+        <label>Дата публикации</label>
+    </div>
+    <div class="col-md-2">
+        {{form.post_date}}
+    </div>
+</div>
+{% endblock %}

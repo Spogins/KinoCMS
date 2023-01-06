@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: >
+      sh -c "python manage.py flush --no-input &&
+             python manage.py migrate --noinput &&
+             python manage.py collectstatic &&
+             python manage.py prepare_db &&
+             gunicorn kinocms.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - .:/app:rw
+      - static_volume:/usr/src/app/static
+      - media_volume:/usr/src/app/media
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+
+  db:
+    image: postgres:13.0
+    volumes:
+      - ./docker/postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    env_file:
+      - .env
+
+  nginx:
+    build: ./docker/nginx
+    volumes:
+      - static_volume:/usr/src/app/static
+      - media_volume:/usr/src/app/media
+    ports:
+      - 80:80
+    depends_on:
+      - web
+
+  redis:
+    image: 'redis:alpine'
+
+  celery:
+    restart: always
+    build:
+      context: .
+    command: python -m celery -A kinocms worker
+    env_file:
+      - .env
+    depends_on:
+      - web
+      - redis
+
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

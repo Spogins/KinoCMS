@@ -1,0 +1,346 @@
+{% extends 'admin_app/base.html' %}
+
+{% block script %}
+<script>
+
+    $('.button_mail').click(function(){
+    var data = new FormData();
+    var user_emails = []
+    var check_list = $('#choose_table').DataTable().$('.user_select:checked', {"page": 'all'}).toArray()
+        check_list.forEach(elem => user_emails.push(elem.value))
+
+        data.append('csrfmiddlewaretoken', '{{csrf_token}}')
+        data.append('html_template', $('#html_template')[0].files[0])
+        data.append('concrete_temp', $('#concrete_temp').val())
+        data.append('load_temp', $('#load_temp').val())
+        data.append('user_emails', JSON.stringify(user_emails))
+        data.append('all_users', $('#all_users').val())
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'mailing' %}',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            enctype: 'multipart/form-data',
+            success: function(data){
+                if(data.task_id){
+                    taskStatus(data.task_id)
+
+                    toastr.options = {
+                      "closeButton": false,
+                      "debug": false,
+                      "newestOnTop": true,
+                      "progressBar": false,
+                      "positionClass": "toast-top-right",
+                      "preventDuplicates": false,
+                      "onclick": null,
+                      "showDuration": "300",
+                      "hideDuration": "1000",
+                      "timeOut": "5000",
+                      "extendedTimeOut": "1000",
+                      "showEasing": "swing",
+                      "hideEasing": "linear",
+                      "showMethod": "fadeIn",
+                      "hideMethod": "fadeOut"
+                    }
+                    toastr["success"]("Рассылка началась!")
+
+                    var mail_ct = document.getElementById('mail_ct')
+                    if (document.getElementById('all_users').checked){
+                        mail_ct.innerHTML = {{user_ct}}
+                    } else
+                    mail_ct.innerHTML = user_emails.length
+                } else {
+
+                    toastr.options = {
+                      "closeButton": false,
+                      "debug": false,
+                      "newestOnTop": true,
+                      "progressBar": false,
+                      "positionClass": "toast-top-right",
+                      "preventDuplicates": false,
+                      "onclick": null,
+                      "showDuration": "300",
+                      "hideDuration": "1000",
+                      "timeOut": "2500",
+                      "extendedTimeOut": "1000",
+                      "showEasing": "swing",
+                      "hideEasing": "linear",
+                      "showMethod": "fadeIn",
+                      "hideMethod": "fadeOut"
+                    }
+
+                    toastr["error"]("Не указаны Пользователи или не выбран Шаблон!")
+                }
+
+            },
+            error: function(){
+                alert('error');
+            }
+        });
+    });
+
+    function taskStatus(task_id){
+        $.ajax({
+            url: 'mailing_progress/'+task_id,
+            type: "GET",
+            success: function(response){
+                console.log(response.state)
+                if(response.state == 'PROGRESS'){
+                    document.getElementById('progress').innerHTML = response.progress + '%'
+                    $('.button_mail').css({'display': 'none'})
+                };
+                if(response.state == 'SUCCESS'){
+                    document.getElementById('progress').innerHTML = response.progress
+                    toastr.options = {
+                      "closeButton": false,
+                      "debug": false,
+                      "newestOnTop": true,
+                      "progressBar": false,
+                      "positionClass": "toast-top-right",
+                      "preventDuplicates": false,
+                      "onclick": null,
+                      "showDuration": "300",
+                      "hideDuration": "1000",
+                      "timeOut": "5000",
+                      "extendedTimeOut": "1000",
+                      "showEasing": "swing",
+                      "hideEasing": "linear",
+                      "showMethod": "fadeIn",
+                      "hideMethod": "fadeOut"
+                    }
+                    toastr["success"]("Рассылка окончена!")
+
+                    $('.button_mail').css({'display': 'block'})
+                    return false;
+                };
+                setTimeout(function(){
+                        taskStatus(response.task_id)
+                }, 500);
+
+            }
+        })
+    }
+
+
+
+    $('#modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var recipient = button.data('whatever')
+        var modal = $(this)
+        modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body input').val(recipient)
+    })
+
+$(document).ready(function () {
+        $('#choose_table').DataTable({
+            columnDefs: [
+                { targets: 'no-sort', orderable: false }
+            ],
+            lengthMenu: [5, 10, 15, 20, 50],
+            language: {
+                "emptyTable": "В таблице нет записей",
+                info: "Показывать от _START_ до _END_ из _TOTAL_ записей",
+                infoEmpty: "Showing 0 to 0 of 0 entries",
+                lengthMenu: "Показывать _MENU_ записей",
+                search: "Поиск:",
+                paginate: {
+                   sNext: 'Вперёд',
+                   sPrevious: 'Назад',
+                   sFirst: 'Первая',
+                   sLast: 'Последняя'
+                }
+            }
+        });
+    });
+
+</script>
+{% endblock %}
+
+{% block page %}
+<div class="content-wrapper">
+    <!--    <form method="POST" enctype="multipart/form-data">-->
+    <!--        {% csrf_token %}-->
+
+    <div class="row" style="border-color:
+                 black; border: solid 1px; margin: 2rem; padding: 2rem; border-radius: 30px; ">
+        <div class="row">
+            <h1 style="text-align: center;">E-mail</h1>
+        </div>
+
+        <div class="row" style="padding: 1rem; align-items: center; justify-content: space-between;">
+            <div class="col-md-2">
+                <label>Выбрать email кому писать</label>
+            </div>
+            <div class="col-md-2" style="display: flex; justify-content: space-evenly;">
+                <label> Все пользователи</label>
+                <div class="form-check">
+                    {{ form_users.all_users }}
+                </div>
+            </div>
+            <div class="col-md-2" style="display: flex; justify-content: space-evenly;">
+                <label> Выборочно</label>
+                <div class="form-check">
+                    {{ form_users.ch_users }}
+                </div>
+            </div>
+            <div class="col-md-3">
+                <!-- Button trigger modal -->
+                <button id="choose_model" type="button" class="btn btn-secondary" data-toggle="modal"
+                        data-target="#modal" style="display: none;">
+                    Выбор пользователей
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" id="modal" tabindex="-1" role="dialog"
+                     aria-labelledby="modalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel">Список пользователей:</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <table id="choose_table" class="table table-striped" style="width:100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>ch</th>
+                                        <th>id</th>
+                                        <th>Дата регистрации</th>
+                                        <th>День рождения</th>
+                                        <th>Email</th>
+                                        <th>Телефон</th>
+                                        <th>ФИО</th>
+                                        <th>Псевданим</th>
+                                        <th>Город</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if users %}
+
+                                    {% for user in users %}
+                                    <tr>
+                                        <td>
+                                            <div style="display: flex; justify-content: flex-end;">
+                                                <input type="checkbox" id="{{user.id}}"
+                                                       value="{{ user.email }}"
+                                                       class="form-check-input user_select">
+                                            </div>
+                                        </td>
+                                        <td>{{ user.id }}</td>
+                                        <td>{{ user.date_joined }}</td>
+                                        <td>{{ user.birth_date }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.phone_number }}</td>
+                                        <td>{{ user.first_name }} {{ user.last_name }}</td>
+                                        <td>{{ user.username }}</td>
+                                        <td>{{ user.city }}</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                                <button type="button" class="btn btn-primary button_mail">Начать рассылку</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col">
+                <div class="row" style="padding: 1rem; align-items: center;">
+                    <div class="col-md-4">
+                        <label>Загрузить HTML-письио</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_mail_template.html_template }}
+                        <button type="button" onclick="uploadFile()" class="btn btn-block btn-default">Загрузить
+                        </button>
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem;">
+                    <div class="col-md-3">
+                        <label>Загружен файл:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <h5 id="fileLabel"></h5>
+                        <input type="text" id="load_temp" name="load_temp" class="form-control" style="display: none;">
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem;">
+                    <div class="col-md-5">
+                        <label>Шаблон используемый в текущей рассылке:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <h5 id="concreteLabel"></h5>
+                        <input type="text" id="concrete_temp" name="concrete_temp" class="form-control"
+                               style="display: none;">
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem;">
+                    <div class="col-md-3">
+                        <label>Кол-во писем</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label id="mail_ct">0</label>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Рассылка выполнена на</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label id="progress"> </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col" style="border-color:
+                 black; border: solid 1px; margin: 2rem; border-radius: 30px; padding: 1rem;">
+                <div class="row" style="justify-content: center; text-align: center; display: flex;">
+                    <div class="col">
+                        <label>Список последних загруженных шаблонов</label>
+                    </div>
+                </div>
+                {%if last_templates%}
+                {%for template in last_templates%}
+                <div class="row" id="{{template.id}}_template">
+                    <div class="col-md-1" style="display: flex; justify-content: flex-end;">
+                        <input type="radio" name="ch_template" class="form-check-input"
+                               onclick="concreteFile('{{template.html_template.name}}')">
+                    </div>
+                    <div class="col-md-7" id="{{template.id}}">
+                        {{template.html_template.name}}
+                    </div>
+                    <div class="col-md-1">
+                        <a style="color: crimson;" href="#" onclick="delTemp({{template.id}})">Удалить</a>
+                    </div>
+                </div>
+                {%endfor%}
+                {%endif%}
+            </div>
+
+            <div class="row" style="padding: 1rem; justify-content: space-evenly;">
+                <div class="col-md-2">
+                    <button class="btn btn-block btn-default button_mail">Начать рассылку</button>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!--    </form>-->
+</div>
+{% endblock %}
+

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+{% load static %}
+{%load i18n %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KinoCMS</title>
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css"
+          crossorigin="anonymous">
+
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
+          crossorigin="anonymous">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{% static 'admin_app/plugins/fontawesome-free/css/all.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin_app/plugins/toastr/toastr.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admin_app/css/style_cms.css' %}">
+    <link rel="stylesheet" href="{% static 'cinema_app/css/carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'cinema_app/css/hall_scheme.css' %}">
+
+    <!-- JQWERY/JS -->
+    <script src="{% static 'admin_app/plugins/toastr/toastr.min.js' %}"></script>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+            crossorigin="anonymous"></script>
+
+    <!--    <script src="{% static 'cinema_app/js/cinema.js' %}"></script>-->
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+            defer></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+
+
+</head>
+<!--style="background-color: {{background}}"-->
+{% if background.url %}
+<body class="bg_style" style="background: url('{{background.url}}')">
+{%else%}
+<body class="bg_style" style="background-color: {{background}}">
+{%endif%}
+
+<div class="wrapper">
+    <div><img src="{%static 'cinema_app/images/head_banner.png' %}" style="width: 100%" alt=""></div>
+    <div class="row" id="header" style="margin-left: auto; margin-right: auto; background-color: #343a40; width: 90%;">
+
+        {% block header %}
+        <header>
+            <div class="row"
+                 style="display: flex; align-items: center; padding-top: 1rem; padding-bottom: 1rem;">
+                <div class="col-md-2" style="display: flex; justify-content: center;">
+                    <a href="{% url 'home' %}" style="display: flex; justify-content: center;"><img
+                            src="{% static 'cinema_app/images/logo.png' %}" alt="" width="80%"
+                            height="100%"></a>
+                </div>
+                <div class="col">
+                    <div class="row" style="display: flex; align-items: center;">
+                        <div class="col-md-3">
+                            <form action="{% url 'search' %}" style="display: flex; align-items: center;" method="get">
+
+                                <input type="search" name="search" class="form-control form-control-lg" placeholder="Поиск"
+                                       height="25px"
+                                       style="width: 100%; height: 50px">
+                                <div class="col-1">
+                                    <button type="submit" class="btn" style="background-color: aliceblue;">GO</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class=col-md-1" style="width: auto">
+                            <a href="#"><img src="{% static 'cinema_app/images/insta.png' %}" alt="" width="40px"
+                                             height="40px"></a>
+                        </div>
+                        <div class=col-md-1" style="width: auto">
+                            <a href="#"><img src="{% static 'cinema_app/images/telega.png' %}" alt="" width="40px"
+                                             height="40px"></a>
+                        </div>
+                        <div class=col-md-1" style="width: auto">
+                            <a href="#"><img src="{% static 'cinema_app/images/viber.png' %}" alt="" width="40px"
+                                             height="40px"></a>
+                        </div>
+                        <div class=col-md-1" style="width: auto">
+                            <a href="#"><img src="{% static 'cinema_app/images/facebook.png' %}" alt="" width="40px"
+                                             height="40px"></a>
+                        </div>
+                        <div class="col-md-2 ">
+
+                            <h4 style="text-align: center; color: aliceblue;">{{contact1}}</h4>
+                            <h4 style="text-align: center; color: aliceblue;">{{contact2}}</h4>
+
+                        </div>
+                        <div class="col-md-2">
+                            <form action="{% url 'set_language' %}" style="display: flex; align-items: center;"
+                                  method="post">{%csrf_token%}
+                                <div class="col">
+                                    <input name="next" type="hidden" value="{{redirect_to}}">
+                                    <select class="form-select " name="language">
+                                        {% get_current_language as LANGUAGE_CODE %}
+                                        {% get_available_languages as LANGUAGES %}
+
+                                        {% get_language_info_list for LANGUAGES as languages %}
+                                        {% for language in languages %}
+                                        <option value="{{language.code}}" {% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+                                            {{language.name_local}} ({{language.code}})
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button type="submit" class="btn" style="background-color: aliceblue;">GO</button>
+
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="col" style="display: flex; justify-content: center;">
+
+                            {% if request.user.is_authenticated %}
+                            <nav class="navbar navbar-expand-lg">
+                                <div class="col" style="justify-content: center;">
+                                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#userRoom" aria-controls="userRoom"
+                                            aria-expanded="false" aria-label="Toggle navigation"
+                                            style="background-color: aliceblue; ">
+                                        <i class="fas fa-bars">Меню</i>
+                                    </button>
+                                    <div class="collapse navbar-collapse" id="userRoom"
+                                         style="justify-content: left;">
+                                        <ul class="navbar-nav"
+                                            style="width: 100%; justify-content: space-around; border: 2px solid #4b545c; border-radius: 5px; background-color: #586474;">
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" style="color: aliceblue;"
+                                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {{request.user.username}}
+                                                </a>
+                                                <ul class="dropdown-menu">
+
+                                                    <li><a class="dropdown-item"
+                                                           href="{% url 'show_user' request.user.id %}">
+                                                        Личный кабинет
+                                                    </a></li>
+                                                    {% if request.user.is_superuser %}
+                                                    <li><a class="dropdown-item"
+                                                           href="{% url 'admin'%}">
+                                                        Админ панель
+                                                    </a></li>
+                                                    {% endif %}
+                                                    <li><a class="dropdown-item" href="{% url 'logout_user' %}">
+                                                        Выйти
+                                                    </a></li>
+
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+
+                                    </div>
+                                </div>
+                            </nav>
+
+                            {% else %}
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                {% trans 'Вход' %}
+                            </button>
+                            {% endif %}
+
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="loginModal" data-bs-backdrop="static" tabindex="-1"
+                                 aria-labelledby="loginModalLabel"
+                                 aria-hidden="true">
+
+                                <div class="modal-dialog " id="modalSize">
+                                    <div class="modal-content" style="background-color: #343a40; color: aliceblue;">
+                                        <div class="modal-header" style="border-color: #586474;">
+                                            <h1 class="modal-title fs-5" id="loginModalLabel">{% trans 'Вход в аккаунт'%}</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="login">
+                                                <form id="login_form">
+                                                    <div class="row" style="padding: 2rem;">
+                                                        <div class="col-md-3"
+                                                             style="display: flex; align-items: center;">
+                                                            {% trans 'Никнейм' %}
+                                                        </div>
+                                                        <div class="col">
+                                                            <input type="text" name="username" class="form-control"
+                                                                   placeholder="{% trans 'Имя пользователя...' %}"
+                                                                   maxlength="150"
+                                                                   autofocus="" required="">
+
+                                                        </div>
+
+
+                                                    </div>
+                                                    <div class="row" style="display: flex;">
+                                                        <div class="col-md-5" style="padding-left: 2rem;">
+
+                                                            <p class="login_name"
+                                                               style="padding-left: 1rem; color: crimson;"></p>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row" style="padding: 2rem;">
+                                                        <div class="col-md-3"
+                                                             style="display: flex; align-items: center;">
+                                                            {% trans 'Пароль'%}
+                                                        </div>
+                                                        <div class="col">
+                                                            <input type="password" autocomplete="on" name="password"
+                                                                   class="form-control"
+                                                                   placeholder="{% trans 'Пароль...'%}" maxlength="30">
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row" style="display: flex;">
+                                                        <div class="col" style="padding-left: 2rem;">
+
+                                                            <p class="password1"
+                                                               style="padding-left: 1rem; color: crimson;"></p>
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div id="register" style="display: none;">
+                                                <form id="register_form">
+                                                    <div class="row" style="padding: 2rem;">
+                                                        <div class="col-md-2"
+                                                             style="display: flex; align-items: center;">
+                                                            {% trans 'Никнейм'%}
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            {{register_form.username}}
+
+                                                        </div>
+                                                        <div class="col-md-3"
+                                                             style="display: flex; align-items: center;">
+                                                            {% trans 'Email-адресс'%}
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            {{register_form.email}}
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row" style="display: flex;">
+                                                        <div class="col-md-5" style="padding-left: 2rem;">
+
+                                                            <p class="name"
+                                                               style="padding-left: 1rem; color: crimson;"></p>
+                                                        </div>
+                                                        <div class="col">
+
+                                                            <p class="email"
+                                                               style="padding-left: 1rem; color: crimson;"></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row " style="padding: 2rem;">
+                                                        <div class="col-md-2"
+                                                             style="display: flex; align-items: center;">
+                                                            {% trans 'Пароль'%}
+                                                        </div>
+                                                        <div class="col-md-3 pswRegister">
+
+                                                            {{register_form.password2}}
+
+                                                        </div>
+                                                        <div class="col-md-3"
+                                                             style="display: flex; align-items: center;">
+                                                            {% trans 'Подтвердить пароль'%}
+                                                        </div>
+                                                        <div class="col-md-3 pswRegister">
+                                                            {{register_form.password1}}
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="display: flex;">
+                                                        <div class="col-md-5" style="padding-left: 2rem;">
+
+                                                            <p class="password2"
+                                                               style="padding-left: 1rem; color: crimson;"></p>
+                                                        </div>
+                                                        <div class="col">
+
+                                                            <p class="password1"
+                                                               style="padding-left: 1rem; color: crimson;"></p>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="border-color: #586474;">
+                                            <div class="col">
+                                                <button type="button" id="btnDismiss" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">
+                                                    {% trans 'Отмена'%}
+                                                </button>
+                                                <button type="button" id="backLogin" onclick="retLoginModal()"
+                                                        style="display: none;" class="btn btn-secondary">
+                                                    {% trans 'Назад'%}
+                                                </button>
+                                            </div>
+                                            <div class="col" id="regiModal"
+                                                 style="display: flex; justify-content: flex-end;">
+                                                <button type="button" onclick="registerModal()" class="btn btn-success">
+                                                    {% trans 'Регистрация'%}
+                                                </button>
+                                            </div>
+                                            <div class="col" style="display: flex; justify-content: flex-end;">
+                                                <button type="button" id="regiBtn" style="display: none;"
+                                                        class="btn btn-primary register">{% trans 'Зарегистрировать аккаунт'%}
+                                                </button>
+                                                <button type="button" id="logiBtn" class="btn btn-primary login">{% trans 'Войти в аккаунт'%}
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-right: 2rem;">
+                        <div class="col">
+                            <nav class="navbar navbar-expand-lg">
+                                <div class="col" style="justify-content: center;">
+                                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+                                            aria-expanded="false" aria-label="Toggle navigation"
+                                            style="background-color: aliceblue; ">
+                                        <i class="fas fa-bars">{% trans 'Меню'%}</i>
+                                    </button>
+                                    <div class="collapse navbar-collapse" id="navbarNavDropdown"
+                                         style="justify-content: left;">
+                                        <ul class="navbar-nav"
+                                            style="width: 100%; justify-content: space-around; border: 2px solid #4b545c; border-radius: 5px; background-color: #586474;">
+
+
+                                            <li class="nav-item">
+                                                <a class="nav-link active" style="color: aliceblue;" aria-current="page"
+                                                   href="{% url 'films' %}">{% trans 'Афиша'%}</a>
+                                            </li>
+
+
+                                            <li class="nav-item">
+                                                <a class="nav-link active" style="color: aliceblue;" aria-current="page"
+                                                   href="{% url 'schedule' %}">{% trans 'Расписание'%}</a>
+                                            </li>
+
+
+                                            <li class="nav-item">
+                                                <a class="nav-link active" style="color: aliceblue;" aria-current="page"
+                                                   href="{% url 'soon' %}">{% trans 'Скоро'%}</a>
+                                            </li>
+
+
+                                            <li class="nav-item">
+                                                <a class="nav-link active" style="color: aliceblue;" aria-current="page"
+                                                   href="{% url 'cinemas' %}">{% trans 'Кинотеатры'%}</a>
+                                            </li>
+
+
+                                            <li class="nav-item">
+                                                <a class="nav-link active" style="color: aliceblue;" aria-current="page"
+                                                   href="{% url 'promotions' %}">{% trans 'Акции'%}</a>
+                                            </li>
+
+
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" style="color: aliceblue;"
+                                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {% trans 'Информация'%}
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="/info/cinema">{% trans 'О Кинотеатре'%}</a>
+                                                    </li>
+                                                    <li><a class="dropdown-item" href="{%url 'news_page'%}">{% trans 'Новости'%}</a>
+                                                    </li>
+
+                                                    <li><a class="dropdown-item" href="/info/adv">{% trans 'Реклама' %}</a></li>
+
+                                                    <li><a class="dropdown-item" href="/info/cafe">{% trans 'Кафе-бар'%}</a></li>
+
+                                                    <li><a class="dropdown-item" href="/info/vip">{% trans 'Вип зал'%}</a></li>
+                                                    <li><a class="dropdown-item" href="/info/child">{% trans 'Детская комната'%}</a>
+                                                    </li>
+
+                                                    <li><a class="dropdown-item" href="/contacts/">{% trans 'Контакты'%}</a></li>
+                                                    {%if pages %}
+                                                    {%for page in pages%}
+                                                    <li><a class="dropdown-item"
+                                                           href="/info/{{page.id}}">{{page.name}}</a></li>
+                                                    {%endfor%}
+                                                    {%endif%}
+
+                                                </ul>
+                                            </li>
+
+
+                                        </ul>
+
+
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </header>
+        {% endblock %}
+
+    </div>
+    {% block carousel %}
+    {% endblock %}
+
+
+    {% block content %}
+    {% endblock %}
+
+
+    {% block carousel_news %}
+    {% endblock %}
+
+    {%block seo_home%}
+    {% endblock %}
+
+
+    {% block footer %}
+    <div class="row" id="footer"
+         style="margin-left: auto; margin-right: auto; background-color: #f4f6f9; border: 2px solid #dee2e6; width: 90%;">
+
+        <footer style="background: white; border-top: solid grey; padding-top: 5rem; padding-left: 2rem; padding-right: 2rem;">
+            <div class="row">
+                <div class="col">
+                    <div class="row" style="text-align: center;">
+                        <h6>{% trans 'Мобильные приложения'%}</h6>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="display: flex; align-items: center;">
+                            <a href=""><img src="{% static 'cinema_app/images/app_google.png' %}" width="100%"
+                                            alt=""></a>
+                        </div>
+                        <div class="col" style="display: flex; align-items: center;">
+                            <a href=""><img src="{% static 'cinema_app/images/app_apple.png' %}" width="100%"
+                                            alt=""></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="display: flex; justify-content: center;">
+                    <ul style="list-style: none">
+                        <li style="font-size: 22px"><a href="{% url 'films' %}" style="color:black; text-decoration: none">{% trans 'Афиша' %}</a>
+                        </li>
+                        <li id="ses"><a href="{% url 'schedule' %}" style="color:black; text-decoration: none">{% trans 'Расписание' %}</a></li>
+                        <li><a href="{% url 'soon' %}" style="color:black; text-decoration: none">{% trans 'Скоро в проекате' %}</a>
+                        </li>
+                        <li><a href="{% url 'cinemas' %}" style="color:black; text-decoration: none">{% trans 'Кинотеатры' %}</a></li>
+                        <li><a href="{% url 'promotions' %}" style="color:black; text-decoration: none">{% trans 'Акции' %}</a></li>
+                    </ul>
+                </div>
+                <div class="col" style="display: flex; justify-content: center;">
+                    <ul style="list-style: none">
+                        <li style="font-size: 22px"><a href="/info/cinema" style="color:black; text-decoration: none">{% trans 'О Кинотеатре' %}</a></li>
+                        <li><a href="{%url 'news_page'%}" style="color:black; text-decoration: none">{% trans 'Новости' %}</a></li>
+                        <li><a href="/info/adv" style="color:black; text-decoration: none">{% trans 'Реклама' %}</a></li>
+                        <li><a href="/info/vip" style="color:black; text-decoration: none">{% trans 'Вип-зал' %}</a></li>
+                        <li><a href="/info/cafe" style="color:black; text-decoration: none">{% trans 'Кафе бар' %}</a></li>
+                        <li><a href="/info/child" style="color:black; text-decoration: none">{% trans 'Детская комната' %}</a></li>
+                        <li><a href="/contacts/" style="color:black; text-decoration: none">{% trans 'Контакты' %}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col" style="display: flex; justify-content: space-evenly;;">
+                    <div class=col-md-1" style="width: auto">
+                        <a href="#"><img src="{% static 'cinema_app/images/insta.png' %}" alt="" width="40px"
+                                         height="40px"></a>
+                    </div>
+                    <div class=col-md-1" style="width: auto">
+                        <a href="#"><img src="{% static 'cinema_app/images/telega.png' %}" alt="" width="40px"
+                                         height="40px"></a>
+                    </div>
+                    <div class=col-md-1" style="width: auto">
+                        <a href="#"><img src="{% static 'cinema_app/images/viber.png' %}" alt="" width="40px"
+                                         height="40px"></a>
+                    </div>
+                    <div class=col-md-1" style="width: auto">
+                        <a href="#"><img src="{% static 'cinema_app/images/facebook.png' %}" alt="" width="40px"
+                                         height="40px"></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    {% endblock %}
+</div>
+<!-- jQuery -->
+<!--<script src="{% static 'admin_app/plugins/jquery/jquery.min.js' %}"></script>-->
+<!-- Bootstrap 4 -->
+<!--<script src="{% static 'admin_app/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>-->
+<script src="{% static 'cinema_app/js/cinema.js' %}"></script>
+{% block script %}
+{% endblock %}
+<script>
+
+$('.register').click(function(){
+    var data = new FormData(register_form);
+    data.append('csrfmiddlewaretoken', '{{csrf_token}}')
+    $.ajax({
+        url: {% url 'registration' %},
+        type: "POST",
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        enctype: 'multipart/form-data',
+        success: function(content){
+            console.log(content)
+            if(content.user){
+                $('#btnDismiss').click()
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Поздравляю!',
+                  text: 'Вы были успешно зарегистрированы',
+                })
+                var timeout = window.setTimeout(function(){location.reload()}, 3000);
+            }
+            else
+                if (content.username)
+                    $('.name').html(content.username)
+                else
+                    $('.name').html('')
+
+                if (content.email)
+                    $('.email').html(content.email)
+                else
+                    $('.email').html('')
+
+                if (content.password2)
+                    $('.password2').html(content.password2)
+                else
+                    $('.password2').html('')
+
+                if (content.password1)
+                    $('.password1').html(content.password1)
+                else
+                    $('.password1').html('')
+
+        }
+    })
+
+})
+$('.login').click(function(){
+    var data = new FormData(login_form);
+    data.append('csrfmiddlewaretoken', '{{csrf_token}}')
+    $.ajax({
+        url: {% url 'login_user' %},
+        type: "POST",
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        enctype: 'multipart/form-data',
+        success: function(content){
+            if (content.user){
+                Swal.fire({
+                  icon: 'success',
+                  title: 'KinoCMS',
+                  text: 'Добро пожаловать '+content.user,
+                })
+                var timeout = window.setTimeout(function(){location.reload()}, 3000);
+            }
+            if (content.password1)
+                $('.password1').html(content.password1)
+            else
+                $('.password1').html('')
+        }
+    })
+})
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

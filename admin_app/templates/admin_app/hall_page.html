@@ -1,0 +1,194 @@
+{% extends 'admin_app/base_page.html' %}
+{% block name %}
+
+<div style="" class="col-md-3 ">
+    {{form.name}}
+    <p style="padding-left: 1rem; color: crimson;">{{report}}</p>
+
+</div>
+{% endblock %}
+{% block cinema_hall %}
+
+<div class="row" style="padding: 1rem; align-items: center;">
+
+    <div class="col-md-1">
+        <label>Схема зала</label>
+    </div>
+
+
+    <div class="col">
+        <div class="col " style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row1" class="form-label">Ряд 1 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row1">
+            </div>
+            <div class="col-1">
+                <label id="row1_val"></label>
+            </div>
+        </div>
+
+        <div class="col" style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row2" class="form-label">Ряд 2 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row2">
+            </div>
+
+            <div class="col-1">
+                <label id="row2_val"></label>
+            </div>
+        </div>
+
+        <div class="col" style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row3" class="form-label">Ряд 3 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row3">
+            </div>
+
+            <div class="col-1">
+                <label id="row3_val"></label>
+            </div>
+        </div>
+
+        <div class="col" style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row4" class="form-label">Ряд 4 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row4">
+            </div>
+
+            <div class="col-1">
+                <label id="row4_val"></label>
+            </div>
+        </div>
+
+        <div class="col" style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row5" class="form-label">Ряд 5 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row5">
+            </div>
+
+
+            <div class="col-1">
+                <label id="row5_val"></label>
+            </div>
+
+        </div>
+
+        <div class="col" style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row6" class="form-label">Ряд 6 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row6">
+            </div>
+
+            <div class="col-1">
+                <label id="row6_val"></label>
+            </div>
+        </div>
+
+        <div class="col" style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row7" class="form-label">Ряд 7 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row7">
+            </div>
+
+            <div class="col-1">
+                <label id="row7_val"></label>
+            </div>
+        </div>
+
+        <div class="col" style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row8" class="form-label">Ряд 8 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row8">
+            </div>
+
+            <div class="col-1">
+                <label id="row8_val"></label>
+            </div>
+        </div>
+
+        <div class="col" style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row9" class="form-label">Ряд 9 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row9">
+            </div>
+
+            <div class="col-1">
+                <label id="row9_val"></label>
+            </div>
+        </div>
+
+        <div class="col" style="display: flex;align-items: center;">
+            <div class="col-1">
+                <label for="row10" class="form-label">Ряд 10 </label>
+            </div>
+
+
+            <div class="col-3">
+                <input type="range" class="form-range" min="10" max="20" step="1" name="place_row"
+                       onchange="show_val(this)" id="row10">
+            </div>
+
+            <div class="col-1">
+                <label id="row10_val"></label>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock %}
+{% block script %}
+<script>
+    function show_val(row){
+    document.getElementById(row.id+"_val").innerHTML=row.value + ' мест';
+}
+
+
+</script>
+{% endblock %}

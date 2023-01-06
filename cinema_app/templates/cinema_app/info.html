@@ -1,0 +1,64 @@
+{% extends 'cinema_app/base.html' %}
+{%load static%}
+{% load i18n %}
+{% block content %}
+<div class="row" style="width: 90%; margin-left: auto; margin-right: auto;">
+    <img style="width: 100%; height: 100%; padding:0px" src="{{page.image.url}}" alt="">
+</div>
+<div class="row " style="background-color: #f4f6f9; border: 2px solid #dee2e6; width: 90%; margin-left: auto; margin-right: auto;">
+    <div class="col" style="margin-top:1rem;">
+        <div class="row" style=" ">
+            <span style="font-size: 30px;">{{page.name}}</span>
+        </div>
+        <div class="row" style=" margin-top:2rem;">
+            <div class="col">
+                <span style="font-size: 20px;">{{page.description}}</span>
+            </div>
+
+        </div>
+      <div class="row" style="margin-top:2rem; text-align: center;">
+                    <label style="font-size:30px ">{% trans 'Фотогалерея'%}</label>
+                </div>
+                <div class="row" style="margin-top:2rem;">
+                    <div id="carousel" class="carousel slide " data-bs-ride="carousel">
+                        <div class="carousel-inner">
+
+                            {%for item in gallery%}
+
+                            <div class="carousel-item">
+                                <img src="{{item.image.url}}" class="d-block w-100 " alt="...">
+                            </div>
+
+                            {%endfor%}
+
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+    </div>
+    <div class="col-2" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <div class="row">
+            <div class="col">
+                <img style="width: 100%; height: 100%" src="{% static 'cinema_app/images/cinema_ads.png' %}"
+                     alt="">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+var item = $('.carousel-inner').children()[0]
+item.setAttribute('class', 'carousel-item active')
+    </script>
+{% endblock %}

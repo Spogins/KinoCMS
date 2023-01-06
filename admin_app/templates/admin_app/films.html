@@ -1,0 +1,72 @@
+{% extends 'admin_app/base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="album">
+        <div class="row" style="justify-content: center; padding-top: 1rem">
+            <div class="col-md-3">
+                <div class="card shadow-sm" style="align-items: center;">
+                    <a href="page/">
+                        <img src="/static/admin_app/image/add_img.png" height="220" alt="">
+                    </a>
+                    <div class="card-body">
+                        <a href="page/">
+                            <button type="button" class="btn btn-block btn-default">Добавить</button>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container" style="padding: 1rem;">
+            <h3 style="text-align: center;">Список Фильмов</h3>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for movie in movies %}
+                {% if movie.premier_date <= now_date %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <a href="{{ movie.get_absolute_url }}">
+                            <img src={{movie.image.url}} alt="" height="500" width="100%">
+                        </a>
+                        <div class="card-body">
+                            <h5>{{movie.name}}</h5>
+                        </div>
+                    </div>
+                    <div style="position: absolute; top: -4%; left: 90%; z-index: 1;">
+                        <a href="{% url 'delete_film' movie.id %}">
+                            <img src="/static/admin_app/image/remoove.png" alt="" width="50px" height="50px">
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="container" style="padding: 1rem;">
+            <h3 style="text-align: center;">Скоро</h3>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for movie in movies %}
+                {% if movie.premier_date > now_date %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <a href="{{ movie.get_absolute_url }}">
+                            <img src={{movie.image.url}} alt="" height="500" width="100%">
+                        </a>
+                        <div class="card-body">
+                            <h5>{{movie.name}}</h5>
+                            <h5>Премьера: {{movie.premier_date}}</h5>
+                        </div>
+                    </div>
+                    <div style="position: absolute; top: -4%; left: 90%; z-index: 1;">
+                        <a href="{% url 'delete_film' movie.id %}">
+                            <img src="/static/admin_app/image/remoove.png" alt="" width="50px" height="50px">
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

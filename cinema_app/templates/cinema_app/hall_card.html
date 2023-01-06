@@ -1,0 +1,134 @@
+{% extends 'cinema_app/base.html' %}
+{%load static%}
+{% load i18n %}
+{% block content %}
+<div class="row" style="width: 90%; margin-left: auto; margin-right: auto;">
+    <img style="width: 100%; height: 100%; padding:0px" src="{{hall.image.url}}" alt="">
+</div>
+<div class="row "
+     style="background-color: #f4f6f9; border: 2px solid #dee2e6; width: 90%; margin-left: auto; margin-right: auto;">
+    <div class="col-2" style="margin:2rem;">
+        <div class="row" style="margin-bottom: 2rem;">
+            <div class="col">
+                <img style="width: 100%; height: 100%" src="{% static 'cinema_app/images/afisha_cntxt_ads.png' %}"
+                     alt="">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label style="font-size: 20px; margin-bottom: 1rem; margin-top: 2rem;">
+                    {% trans 'Смотрите сегодня'%}:
+                </label>
+            </div>
+        </div>
+        <div class="row" id="all_seances" style="display: flex;flex-direction: column; border: solid 1px;">
+
+            {% for seance in seances %}
+            <div class="col"
+                 style="cursor: pointer; padding:1rem; border: solid 1px; display: flex; justify-content: space-between;"
+                 onclick="window.location.href='{%url 'booking' seance.id%}'">
+                <label style="font-size: 20px;display: flex;align-items: center;">{% trans 'Сеанс'%} {{ forloop.counter }}</label>
+            </div>
+            {% endfor %}
+
+
+        </div>
+        <div class="row">
+            <div class="col" style="display: flex;justify-content: center;">
+                <button type="button" onclick="window.location.href='/schedule/?hall={{hall.id}}&cinema={{cinema_id}}'"
+                        class="btn btn-success" style="margin:2rem;">
+                    {% trans 'Расписание сеансов'%}
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <div class="col" style="margin:2rem;">
+        <div class="row">
+            <div class="col">
+                <div class="row" style="text-align:center;">
+                    <label style="font-size: 30px;">
+                        {% trans 'Зал'%} {{hall.name}}
+                    </label>
+                </div>
+
+                <div class="row" style="margin-top:2rem;">
+                    <label style="font-size: 20px;">
+                        {{hall.description}}
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="row" style="margin-top:5rem;">
+
+            <div class="col" style="display: flex;justify-content: center; margin-left: 8%;">
+                <div style="display:block; width: 70%; border-radius: 40%; border-top: solid 5px; text-align: center;">
+                    <h3 style="margin-top: 1rem;">{% trans 'ЭКРАН'%}</h3>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" id="hall_scheme" style="margin: 1rem;">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row" style="margin-top:2rem; text-align: center;">
+                    <label style="font-size:30px ">{% trans 'Фотогалерея'%}</label>
+                </div>
+                <div class="row" style="margin-top:2rem;">
+                    <div id="carousel" class="carousel slide " data-bs-ride="carousel">
+                        <div class="carousel-inner">
+
+                            {%for item in gallery%}
+
+                            <div class="carousel-item">
+                                <img src="{{item.image.url}}" class="d-block w-100 " alt="...">
+                            </div>
+
+                            {%endfor%}
+
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel"
+                                data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carousel"
+                                data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+var hall_scheme = {{hall_scheme}}
+var scheme = document.getElementById("hall_scheme");
+var row = ''
+for(var x = 0; x < hall_scheme.length; x++){
+    if(x!=3)
+        row += '<div class="row"><div class="col-1" style="display: flex;align-items: center;"><span>РЯД '+(1+x)+'</span></div><div class="col"><div class="row" style="display: flex; justify-content: center;">'
+    else
+        row += '<div class="row" style="margin-top:3rem;"><div class="col-1" style="display: flex;align-items: center;"><span>РЯД '+(1+x)+'</span></div><div class="col"><div class="row" style="display: flex; justify-content: center;">'
+
+    for(var q = 0; q < hall_scheme[x]; q++){
+        row+='<div class="hall_place"><div style=""><div>'+ (1+q) +'</div></div></div>'
+    }
+    row += '</div></div></div>'
+}
+scheme.innerHTML = row
+var item = $('.carousel-inner').children()[0]
+item.setAttribute('class', 'carousel-item active')
+</script>
+{% endblock %}

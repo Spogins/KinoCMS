@@ -1,0 +1,256 @@
+{% extends 'cinema_app/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<div class="row" style="width: 90%; margin-left: auto; margin-right: auto;">
+    <iframe style="width: 100%; height: 50rem; padding-left: 0px; padding-right: 0px;"
+            src="{{show.trailer}}"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+    </iframe>
+</div>
+<div class="row"
+     style="background-color: #f4f6f9; border: 2px solid #dee2e6; width: 90%; margin-left: auto;
+      margin-right: auto; display: flex; justify-content: center;">
+
+    <div class="row" style="display: flex; justify-content: center; margin: 1rem;">
+        <div class="col-md-3" style="display: flex; align-items: center; justify-content: flex-end;">
+            <h5>{% trans 'Расписание сеансов кинотеатра'%}</h5>
+        </div>
+        <div class="col-md-2">
+            {%if cinemas%}
+            <select class="form-select" id="select">
+                {% for cinema in cinemas %}
+                <option class="cinema" value="{{cinema.id}}">{{cinema.name}}</option>
+                {% endfor %}
+            </select>
+            {%endif%}
+        </div>
+        <div class="row" id="film_types" style="display: contents;">
+            <div class="col-md-1">
+                <button type="button" onclick="get_all_type()" class="btn btn-secondary w-100">Все</button>
+            </div>
+            <div class="col-md-1" id="2d">
+                <button type="button" onclick="get_type('2D')" class="btn btn-secondary w-100">2D</button>
+            </div>
+            <div class="col-md-1" id="3d">
+                <button type="button" onclick="get_type('3D')" class="btn btn-secondary w-100">3D</button>
+            </div>
+            <div class="col-md-1" id="imax">
+                <button type="button" onclick="get_type('IMAX')" class="btn btn-secondary w-100">IMAX</button>
+            </div>
+        </div>
+        <div class="row news_param" id="seance_date" style="display: flex; justify-content: space-evenly; margin-top: 2rem; margin-bottom: 1rem;">
+            {%if weak%}
+            {% for day in weak %}
+            <button onclick='get_type("{{day|date:"Y-m-d"}}", true)' type='button' class='btn btn-secondary col-1'>
+
+                    <h6 style='margin-bottom: 0px;'>{{day|date:"d D"}}</h6>
+                <h6 style='margin-bottom: 0px;'>{{day|date:"E"}}</h6>
+
+            </button>
+            {% endfor %}
+            {%endif%}
+        </div>
+        <div class="row">
+            <div class="col-md-2" style="display: flex; justify-content: center; padding-top: 2rem;">
+                <h5 id="cinema_name"></h5>
+            </div>
+            <div class="col" id="card_inf" style="display: block; ">
+                <div class="row" id="film_inf" style="display: flex; ">
+
+                </div>
+            </div>
+
+            <div style="display: none">
+                <div class="col-2 news_param"  id="empty_form" style="cursor: pointer; display: flex; margin: 1rem;">
+
+                    <div class="col news_param">
+                        <div class="col"><h5 class="time" style="margin-bottom: 0px; text-align: center;"></h5></div>
+                        <div class="col" style="text-align: center;">Зал <span class="hall"></span></div>
+                    </div>
+                    <div class="col news_param">
+                        <div class="col"><h5 class="type" style="margin-bottom: 0px; text-align: center;"></h5></div>
+                        <div class="col price" style="text-align: center;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col" id="card_type" style="display: none; ">
+                <div class="row" id="film_type" style="display: flex; ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-4" style="margin: 3rem; ">
+            <img style="width: 80%; height: 100%;" src="{{show.image.url}}" alt="">
+        </div>
+        <div class="col" style="margin: 3rem;">
+            <div class="col" style="display: flex; justify-content: center; margin-top: 2rem;">
+                <a href="/schedule/?film={{show.id}}">
+                    <button type="button" class="btn btn-success">{% trans 'Купить билет'%}</button>
+                </a>
+            </div>
+            <div class="col" style="display: flex; justify-content: center; margin-top: 2rem;">
+                <h3>{{show.name}}</h3>
+            </div>
+            <div class="col" style="display: flex; text-align: center; justify-content: center; margin-top: 1rem;">
+                {{show.description}}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col-md-8" style="margin: 3rem; padding: 1rem; background-color: #343a40; color: aliceblue;">
+                    <div class="row" style="background-color: #4b545c; ">
+                        <div class="col-md-4">год</div>
+                        <div class="col">{{film_info.year}}</div>
+                    </div>
+                    <div class="row" style="background-color: #586474;">
+                        <div class="col-md-4">страна</div>
+                        <div class="col">{{film_info.country}}</div>
+                    </div>
+                    <div class="row" style="background-color: #4b545c; ">
+                        <div class="col-md-4">композитор</div>
+                        <div class="col">{{film_info.composer}}</div>
+                    </div>
+                    <div class="row" style="background-color: #586474;">
+                        <div class="col-md-4">продюсер</div>
+                        <div class="col">{{film_info.producer}}</div>
+                    </div>
+                    <div class="row" style="background-color: #4b545c; ">
+                        <div class="col-md-4">режисер</div>
+                        <div class="col">{{film_info.director}}</div>
+                    </div>
+                    <div class="row" style="background-color: #586474;">
+                        <div class="col-md-4">сценарист</div>
+                        <div class="col">{{film_info.screenwriter}}</div>
+                    </div>
+                    <div class="row" style="background-color: #4b545c; ">
+                        <div class="col-md-4">продюсер</div>
+                        <div class="col">{{film_info.producer}}</div>
+                    </div>
+                    <div class="row" style="background-color: #586474;">
+                        <div class="col-md-4">оператор</div>
+                        <div class="col">{{film_info.operator}}</div>
+                    </div>
+                    <div class="row" style="background-color: #4b545c; ">
+                        <div class="col-md-4">продюсер</div>
+                        <div class="col">{{film_info.producer}}</div>
+                    </div>
+                    <div class="row" style="background-color: #586474;">
+                        <div class="col-md-4">сценарист</div>
+                        <div class="col">{{film_info.screenwriter}}</div>
+                    </div>
+                    <div class="row" style="background-color: #4b545c; ">
+                        <div class="col-md-4">сценарист</div>
+                        <div class="col">{{film_info.screenwriter}}</div>
+                    </div>
+                    <div class="row" style="background-color: #586474;">
+                        <div class="col-md-4">жанр</div>
+                        <div class="col">{{film_info.genre}}</div>
+                    </div>
+                    <div class="row" style="background-color: #4b545c; ">
+                        <div class="col-md-4">бюджет</div>
+                        <div class="col">{{film_info.budget}}</div>
+                    </div>
+                    <div class="row" style="background-color: #586474;">
+                        <div class="col-md-4">возраст</div>
+                        <div class="col">зрителям, достигшим {{film_info.age}} лет</div>
+                    </div>
+                    <div class="row" style="background-color: #4b545c; ">
+                        <div class="col-md-4">время</div>
+                        <div class="col">{{film_info.time}}</div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col" style="margin: 3rem;">
+            {%if gallery%}
+            <div id="carousel" class="carousel slide " data-bs-ride="carousel">
+                <div class="carousel-inner">
+
+                    {%for item in gallery%}
+
+                    <div class="carousel-item">
+                        <img src="{{item.image.url}}" class="d-block w-100 " alt="...">
+                    </div>
+
+                    {%endfor%}
+
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            {%endif%}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{% block script %}
+<script>
+
+function showSeance(cinema_id, cinema_name){
+    var data = new FormData();
+    data.append('csrfmiddlewaretoken', '{{csrf_token}}')
+    data.append('cinema_id', cinema_id)
+    data.append('film_id', {{show.id}})
+    $.ajax({
+        url: '{% url 'seances' %}',
+        type: "POST",
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        enctype: 'multipart/form-data',
+        success: function(content){
+            var single_type = true
+            var film_inf = document.getElementById("film_inf")
+            film_inf.innerHTML = ''
+
+            if(content.context.length > 0)
+                document.getElementById("cinema_name").innerHTML = cinema_name
+
+            content.context.forEach((elem) => {
+                create_film_info(elem)
+            })
+
+        }
+    })
+}
+function get_select(){
+    var selectBox=document.getElementById("select");
+    var selectVal=selectBox.options[selectBox.selectedIndex].value;
+    var cinemaName=selectBox.options[selectBox.selectedIndex].innerHTML
+    showSeance(selectVal, cinemaName)
+}
+$("document").ready(function(){
+    get_select()
+})
+$(".form-select").change(function(){
+    get_select()
+    get_all_type()
+})
+
+var item = $('.carousel-inner').children()[0]
+item.setAttribute('class', 'carousel-item active')
+
+</script>
+{% endblock %}

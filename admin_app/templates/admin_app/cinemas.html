@@ -1,0 +1,43 @@
+{% extends 'admin_app/base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="album">
+        <div class="container" style="padding: 1rem;">
+            <h3 style="text-align: center;">Список Кинотеатров</h3>
+            <div class="row" style="justify-content: center; padding-top: 1rem">
+                <div class="col-md-3">
+                    <div class="card shadow-sm" style="align-items: center;">
+                        <a href="page/">
+                            <img src="/static/admin_app/image/add_img.png" height="220" alt="">
+                        </a>
+                        <div class="card-body">
+                            <a href="page/">
+                                <button type="button" class="btn btn-block btn-default">Добавить</button>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+                {% for cinema in cinemas_obj %}
+                <div class="col-md-3">
+                    <div class="card shadow-sm">
+                        <a href="{{ cinema.get_absolute_url }}">
+                            <img src={{cinema.image.url}} alt="" height="226px" width="100%">
+                        </a>
+                        <div class="card-body">
+                            <h5>{{cinema.name}}</h5>
+                        </div>
+                    </div>
+                    <div style="position: absolute; top: -8%; left: 90%; z-index: 1;">
+                        <a href="{% url 'delete_cinema' cinema.id %}">
+                            <img src="/static/admin_app/image/remoove.png" alt="" width="50px" height="50px">
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

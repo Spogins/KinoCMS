@@ -1,0 +1,349 @@
+{% extends 'admin_app/base.html' %}
+
+{% block banner %}
+<div class="content-wrapper">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col" style="padding-top: 1rem;">
+            <div class="col">
+                <h3 style="text-align: center;">На главной вверх</h3>
+            </div>
+            <div class="row"
+                 style="border-color: black; border: solid 1px; margin: 2rem; padding: 2rem; border-radius: 30px;">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Размер: 1000x190</label>
+                    </div>
+                    <div class="col">
+                        <div class="form-check form-switch">
+                            {{carousel_home_form.active}}
+                            <label>Active</label>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                {% if home_banner_formset %}
+                {{home_banner_formset.management_form}}
+                <div class="row" id="homeBannerSet">
+                    {% for form in home_banner_formset %}
+
+                    <div id="home_banner_{{form.id.value}}" class="ingredient_form col-md-3" style="margin: 1rem;">
+                        {{form.id}}
+                        <div class="card shadow-sm" style="align-items: center;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col"
+                                         style="display: flex; flex-direction: column; align-items: center;">
+                                        {{form.image}}
+                                        <div style="padding: 1rem;">
+                                            {% if form.instance.image %}
+                                            <img class="imgIn" src="{{form.instance.image.url}}" alt=""
+                                                 width="150px"
+                                                 height="150px">
+                                            {% endif %}
+                                        </div>
+                                        <button onclick="addImage(this)" type="button"
+                                                class="btn btn-block btn-default">
+                                            Добавить
+                                        </button>
+                                    </div>
+                                    <div class="row" style="padding: 1rem;">
+                                        <div class="col-md-2">
+                                            <label>URL:</label>
+                                        </div>
+                                        <div class="col">
+                                            {{form.url}}
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 1rem;">
+                                        <div class="col-md-2">
+                                            <label>Text:</label>
+                                        </div>
+                                        <div class="col">
+                                            {{form.text}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="position: absolute; top: -8%; left: 87%; z-index: 1;">
+                            <div style="display: none;">
+                                {{form.DELETE}}
+                            </div>
+                            <button type="button" onclick="remForm(this, 'home')" class="btn"><img
+                                    src="/static/admin_app/image/remoove.png" alt=""
+                                    width="50px" height="50px"></button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div id="empty-form" class="col-md-3" style="margin: 1rem; display: none;">
+                    <div class="card shadow-sm" style="align-items: center;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col" style="display: flex; flex-direction: column; align-items: center;">
+                                    {{home_banner_formset.empty_form.image}}
+
+                                    <div style="padding: 1rem;">
+                                        <img class="imgIn" src="/static/admin_app/image/add_img.png" alt=""
+                                             width="150px"
+                                             height="150px">
+                                    </div>
+                                    <button onclick="addImage(this)" type="button" class="btn btn-block btn-default">
+                                        Добавить
+                                    </button>
+                                </div>
+                                <div class="row" style="padding: 1rem;">
+                                    <div class="col-md-2">
+                                        <label>URL:</label>
+                                    </div>
+                                    <div class="col">
+                                        {{home_banner_formset.empty_form.url}}
+                                    </div>
+                                </div>
+                                <div class="row" style="padding: 1rem;">
+                                    <div class="col-md-2">
+                                        <label>Text:</label>
+                                    </div>
+                                    <div class="col">
+                                        {{home_banner_formset.empty_form.text}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="position: absolute; top: -8%; left: 87%; z-index: 1;">
+
+                        <button type="button" onclick="delForm(this, 'home')" class="btn"><img
+                                src="/static/admin_app/image/remoove.png" alt=""
+                                width="50px" height="50px"></button>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="col-md-3" style="margin: 1rem;">
+                    <button type="button" id="addHomeBannerForm" class="btn btn-block btn-default">Добавить Баннер
+                    </button>
+                </div>
+
+
+                <div class="col" style="padding: 1rem; align-items: center;">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>Cкорость вращения</label>
+                        </div>
+                        <div class="col-md-1">
+                            {{carousel_home_form.interval}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="col">
+                <h3 style="text-align: center;">Cквозной баннер на задний фон</h3>
+            </div>
+            <div class="row"
+                 style="border-color: black; border: solid 1px; margin: 2rem; padding: 2rem; border-radius: 30px;">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Размер: 2000x3000</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2" style="display: flex; align-items: center;">
+                        <div class="form-check">
+                            {{bg_banner_form.type}}
+                            <label>Фото на фон</label>
+                        </div>
+                    </div>
+                    <div class="col" id="photo_background">
+                        <div class="row">
+                            <div class="col-md-3" style="">
+
+                                {% if bg_banner_form.instance.bg_image %}
+                                <img id="mainImg" src="{{bg_banner_form.instance.bg_image.url}}" alt="" title="add"
+                                     class="null" width="200px"
+                                     height="200px">
+                                {% else %}
+                                <img id="mainImg" src="/static/admin_app/image/add_img.png" alt="" title="add"
+                                     class="null" width="200px"
+                                     height="200px">
+                                {% endif %}
+                            </div>
+                            <div class="col-md-3">
+                                <table class="table table-bordered text-center">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            {{bg_banner_form.bg_image}}
+                                            <button onclick="upload()" type="button" class="btn btn-block btn-default">
+                                                Добавить
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button onclick="remove()" type="button" class="btn btn-block btn-default">
+                                                Удалить
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input onclick="bgType(bg_simple)" class="form-check-input" type="radio" id="bg_simple"
+                                   checked>
+                            <label>Простой фон</label>
+                        </div>
+                    </div>
+                    <div class="col-md-1" id="simple_background">
+                        {{bg_banner_form.color}}
+                    </div>
+                </div>
+                <script>bgType()</script>
+            </div>
+        </div>
+        <div class="col">
+            <div class="col">
+                <h3 style="text-align: center;">На главной Новости и Акции</h3>
+            </div>
+            <div class="row"
+                 style="border-color: black; border: solid 1px; margin: 2rem; padding: 2rem; border-radius: 30px;">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label>Размер: 1000x190</label>
+                    </div>
+                    <div class="col">
+                        <!-- Default switch -->
+                        <div class="form-check form-switch">
+                            {{carousel_promo_form.active}}
+                            <label>Active</label>
+                        </div>
+                    </div>
+                </div>
+
+                {% if promo_banner_formset %}
+                {{promo_banner_formset.management_form}}
+                <div class="row" id="promoBannerSet">
+                    {% for form in promo_banner_formset %}
+                    <div id="promo_banner_{{form.id.value}}" class="ingredient_form col-md-3" style="margin: 1rem;">
+                        {{form.id}}
+                        <div class="card shadow-sm" style="align-items: center;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col"
+                                         style="display: flex; flex-direction: column; align-items: center;">
+                                        {{form.image}}
+                                        <div style="padding: 1rem;">
+                                            {% if form.instance.image %}
+                                            <img class="imgIn" src="{{form.instance.image.url}}" alt=""
+                                                 width="150px"
+                                                 height="150px">
+                                            {% endif %}
+                                        </div>
+                                        <button onclick="addImage(this)" type="button"
+                                                class="btn btn-block btn-default">Добавить
+                                        </button>
+                                    </div>
+                                    <div class="row" style="padding: 1rem;">
+                                        <div class="col-md-2">
+                                            <label>URL:</label>
+                                        </div>
+                                        <div class="col">
+                                            {{form.url}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="position: absolute; top: -8%; left: 87%; z-index: 1;">
+                            <div style="display: none;">{{form.DELETE}}</div>
+                            <button onclick="remForm(this, 'promo')" type="button" class="btn"><img
+                                    src="/static/admin_app/image/remoove.png" alt=""
+                                    width="50px" height="50px"></button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div id="empty-form-promo" class="col-md-3" style="margin: 1rem; display: none;">
+                    <div class="card shadow-sm" style="align-items: center;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col"
+                                     style="display: flex; flex-direction: column; align-items: center;">
+                                    {{promo_banner_formset.empty_form.image}}
+                                    <div style="padding: 1rem;">
+                                        <img class="imgIn" src="/static/admin_app/image/add_img.png" alt=""
+                                             width="150px"
+                                             height="150px">
+                                    </div>
+                                    <button onclick="addImage(this)" type="button"
+                                            class="btn btn-block btn-default">Добавить
+                                    </button>
+                                </div>
+                                <div class="row" style="padding: 1rem;">
+                                    <div class="col-md-2">
+                                        <label>URL:</label>
+                                    </div>
+                                    <div class="col">
+                                        {{promo_banner_formset.empty_form.url}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="position: absolute; top: -8%; left: 87%; z-index: 1;">
+                        <button onclick="delForm(this, 'promo')" type="button" class="btn"><img
+                                src="/static/admin_app/image/remoove.png" alt=""
+                                width="50px" height="50px"></button>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="col-md-3" style="margin: 1rem;">
+                    <button id="addPromoBannerSet" type="button" class="btn btn-block btn-default">Добавить Баннер
+                    </button>
+                </div>
+                <div class="col" style="padding: 1rem; align-items: center;">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label>Cкорость вращения</label>
+                        </div>
+                        <div class="col-md-1">
+                            {{carousel_promo_form.interval}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding: 1rem; justify-content: space-evenly;">
+            <div class="col-md-2">
+                <td>
+                    <button type="submit" class="btn btn-block btn-default">Обновить и Сохранить</button>
+                </td>
+
+            </div>
+            <div class="col-md-2">
+                <td>
+                    <button onClick="window.location.reload()" type="button" class="btn btn-block btn-default">Вернуть
+                        базовую версию
+                    </button>
+                </td>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

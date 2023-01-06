@@ -1,0 +1,203 @@
+{% extends 'admin_app/base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row" style="justify-content: end; padding-top: 2rem;">
+            <div class="col-md-1" style="display: flex; align-items: center; justify-content: center;">
+                <div class="form-check form-switch">
+                    {{form.active}}
+                    <label>Active</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="row" style="padding: 1rem;">
+            <div class="col-md-1">
+                <label>Дата создания</label>
+            </div>
+            <div class="col-md-2">
+                {{form.date}}
+            </div>
+        </div>
+
+        {% if cinema_contact_formset %}
+        {{cinema_contact_formset.management_form}}
+        <div class="col" id="cinemaSet">
+            {% for form in cinema_contact_formset %}
+            <div id="cinema_contact_{{form.id.value}}" class="ingredient_form row" style="border-color:
+                 black; border: solid 1px; margin: 2rem; padding: 2rem; border-radius: 30px;">
+                {{form.id}}
+                <div class="row" style="padding: 1rem;">
+                    <div class="col-md-2">
+                        <label>Название кинотеатра</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.name}}
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem;">
+                    <div class="col-md-1">
+                        <label>Адресс</label>
+                    </div>
+                    <div class="col-md-8">
+                        {{form.address}}
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem;">
+                    <div class="col-md-2">
+                        <label>Координаты для карты</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.location}}
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem; align-items: center;">
+
+                    <div class="col-md-1">
+                        <label>Лого</label>
+                    </div>
+
+
+                    <div class="col-md-2">
+                        <img class="imgIn" src="{{form.instance.logo.url}}" title="add" alt=""
+                             width="100%" height="226px">
+
+
+                        {{form.logo}}
+                        <button onclick="addImage(this)" type="button" class="btn btn-block btn-default">Изменить
+                        </button>
+
+
+                    </div>
+                </div>
+                <div style="position: absolute; left: 90%;">
+                    <div style="display: none;">
+                        {{form.DELETE}}
+                    </div>
+                    <button type="button" onclick="remForm(this)" class="btn"><img
+                            src="/static/admin_app/image/remoove.png" alt=""
+                            width="50px" height="50px"></button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="empty-form" class="row" style="margin: 1rem; display: none;">
+            <div class="row" style="padding: 1rem;">
+                <div class="col-md-2">
+                    <label>Название кинотеатра</label>
+                </div>
+                <div class="col-md-4">
+                    {{cinema_contact_formset.empty_form.name}}
+                </div>
+            </div>
+            <div class="row" style="padding: 1rem;">
+                <div class="col-md-1">
+                    <label>Адресс</label>
+                </div>
+                <div class="col-md-8">
+                    {{cinema_contact_formset.empty_form.address}}
+                </div>
+            </div>
+            <div class="row" style="padding: 1rem;">
+                <div class="col-md-2">
+                    <label>Координаты для карты</label>
+                </div>
+                <div class="col-md-4">
+                    {{cinema_contact_formset.empty_form.location}}
+                </div>
+            </div>
+            <div class="row" style="padding: 1rem; align-items: center;">
+
+                <div class="col-md-1">
+                    <label>Лого</label>
+                </div>
+
+
+                <div class="col-md-2">
+                    <img class="imgIn" src="/static/admin_app/image/add_img.png" title="add" alt=""
+                         width="100%" height="226px">
+
+
+                    {{cinema_contact_formset.empty_form.logo}}
+                    <button onclick="addImage(this)" type="button" class="btn btn-block btn-default">Загрузить
+                    </button>
+
+
+                </div>
+            </div>
+            <div style="position: absolute; left: 90%;">
+
+                <button type="button" onclick="deleteForm(this)" class="btn"><img
+                        src="/static/admin_app/image/remoove.png" alt=""
+                        width="50px" height="50px"></button>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <div class="row" style="justify-content: center;">
+            <div class="col-md-3" style="margin: 1rem;">
+                <button onclick="addForm()" type="button" class="btn btn-block btn-default">Добавить кинотеатр
+                </button>
+            </div>
+        </div>
+        <div class="row" style="padding: 1rem;">
+            <div class="col-md-1">
+                <label>SEO блок:</label>
+            </div>
+            <div class="col" style="padding-top: 1rem;">
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>URL: </label>
+                    </div>
+                    <div class="col-md-5">
+                        {{seo_form.url}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Title:</label>
+                    </div>
+                    <div class="col-md-5">
+                        {{seo_form.title}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Keywords:</label>
+                    </div>
+                    <div class="col-md-5">
+                        {{seo_form.keywords}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <label>Description:</label>
+                    </div>
+                    <div class="col-md-5">
+                        {{seo_form.description}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding: 1rem; justify-content: space-evenly;">
+            <div class="col-md-2">
+                <td>
+                    <button type="submit" class="btn btn-block btn-default">Обновить и Сохранить</button>
+                </td>
+
+            </div>
+            <div class="col-md-2">
+                <td>
+                    <button onClick="window.location.reload()" type="button" class="btn btn-block btn-default">Вернуть
+                        базовую версию
+                    </button>
+                </td>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

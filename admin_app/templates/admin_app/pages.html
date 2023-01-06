@@ -1,0 +1,128 @@
+{% extends 'admin_app/base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="album">
+        <div class="row" style="justify-content: center; padding-top: 1rem; padding-left: 15rem;">
+            <div class="col-md-3">
+                <h3 style="text-align: center;">Список Страниц</h3>
+            </div>
+            <div class="col-md-3">
+                <a href="create_page/">
+                    <button type="button" class="btn btn-block btn-default">Создать Новую</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 2rem;">
+        <table id="table" class="table table-striped" style="width:100%">
+            <thead>
+            <tr>
+                <th>Название</th>
+                <th>Дата создания</th>
+                <th>Статус</th>
+
+                <th class="no-sort"></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% if home %}
+            <tr>
+                <td>
+                    Главная страница
+                </td>
+                <td>
+                    {{home.date}}
+                </td>
+                <td>
+                    {% if home.active %}
+                    Вкл
+                    {% else %}
+                    Выкл
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="home_page/" style="display: flex; justify-content: center;">
+                        <img src="/static/admin_app/image/pngegg.png" width="20px" height="20px" alt="">
+                    </a>
+                </td>
+                <td></td>
+            </tr>
+            {% endif %}
+
+
+            {% if base %}
+            {% for elem in base %}
+            <tr>
+                <td>{{elem.name}}</td>
+                <td>{{elem.date}}</td>
+                <td>{% if elem.active %}
+                    Вкл
+                    {% else %}
+                    Выкл
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ elem.get_absolute_url }}" style="display: flex; justify-content: center;">
+                        <img src="/static/admin_app/image/pngegg.png" width="20px" height="20px" alt="">
+                    </a>
+                </td>
+                <td>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+            {% if contacts %}
+            <tr>
+                <td>Контакты</td>
+                <td>{{contacts.date}}</td>
+                <td>{% if contacts.active %}
+                    Вкл
+                    {% else %}
+                    Выкл
+                    {% endif %}
+                </td>
+                <td><a href="contacts/" style="display: flex; justify-content: center;">
+                    <img src="/static/admin_app/image/pngegg.png" width="20px" height="20px" alt="">
+                </a></td>
+                <td></td>
+            </tr>
+            {% endif %}
+
+
+            {% if pages %}
+            {% for elem in pages %}
+            <tr>
+                <td>{{elem.name}}</td>
+                <td>{{elem.date}}</td>
+                <td>{% if elem.active %}
+                    Вкл
+                    {% else %}
+                    Выкл
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ elem.get_absolute_url }}" style="display: flex; justify-content: center;">
+                        <img src="/static/admin_app/image/pngegg.png" width="20px" height="20px" alt="">
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'delete_page' elem.id %}" style="display: flex; justify-content: center;">
+                        <img src="/static/admin_app/image/remoove.png" width="20px" height="20px" alt="">
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,53 @@
+.hall_place {
+    display: flex;
+    width: 4%;
+    padding-top: 1.5%;
+    background-color: #4099b1;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 0.1rem;
+    border-radius: 0.5rem;
+    border: solid 2px #4099b1;
+    color: aliceblue;
+    cursor: pointer
+}
+
+.reserved_place {
+    display: flex;
+    width: 4%;
+    padding-top: 1.5%;
+    background-color: #8fb5bf;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 0.1rem;
+    border-radius: 0.5rem;
+    border: solid 2px #4099b1;
+    color: aliceblue;
+}
+
+.bought_place {
+    display: flex;
+    width: 4%;
+    padding-top: 1.5%;
+    background-color: #4fca8c;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 0.1rem;
+    border-radius: 0.5rem;
+    border: solid 2px #4099b1;
+    color: aliceblue;
+}
+
+.sold_place {
+    display: flex;
+    width: 4%;
+    padding-top: 1.5%;
+    background-color: #ffffff;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 0.1rem;
+    border-radius: 0.5rem;
+    border: solid 2px #ffffff;
+    color: #ffffff;
+}
+

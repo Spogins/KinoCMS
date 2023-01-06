@@ -1,0 +1,204 @@
+{% extends 'cinema_app/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block carousel %}
+<div class="container" style="padding: 0;">
+{%if carousel_img%}
+<div id="carousel" class="carousel slide">
+    <div class="carousel-inner">
+
+        {%for item in carousel_img%}
+
+        <div class="carousel-item">
+            <img src="{{item.image.url}}" class="d-block w-100" alt="...">
+        </div>
+
+        {%endfor%}
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+{%endif%}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+<div class="container" style="background-color: #f4f6f9; border: 2px solid #dee2e6;">
+<div class="row" style="text-align: center; margin-top: 2rem; margin-bottom: 1rem;">
+    <h3>{% trans 'Смотрите сегодня'%}, {{now_date}}</h3>
+</div>
+<div class="row">
+    {% for movie in movies %}
+    {% if movie.premier_date <= now_date %}
+
+    <div class="col" style="display: flex; margin-top: 1rem; margin-bottom: 1rem;">
+        <div class="card" style="width: 18rem;">
+            <a href="{% url 'film_card' movie.id %}" style="
+    display: contents;">
+                <img src={{movie.image.url}} alt="" height="70%" width="100%">
+            </a>
+            <div class="card-body" style="display: flex; flex-direction: column;">
+                 <div class="col">
+                <h5>{{movie.name}}</h5>
+                </div>
+                <div class="row">
+
+                <div class="col" style="display: flex; justify-content: center;">
+                    <a href="{% url 'schedule' %}?film={{movie.id}}" class="btn btn-primary">{% trans 'Купить билет'%}</a>
+                </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+<div class="row" style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
+    <h3>{% trans 'Смотрите скоро'%}</h3>
+</div>
+<div class="row">
+    {% for movie in movies %}
+    {% if movie.premier_date > now_date %}
+    <div class="col" style="display: flex; margin-top: 1rem; margin-bottom: 1rem;">
+        <div class="card" style="width: 18rem;">
+            <a href="{% url 'film_card' movie.id %}" style="
+    display: contents;">
+                <img src={{movie.image.url}} alt="" height="70%" width="100%">
+            </a>
+            <div class="card-body" style="display: flex; flex-direction: column;">
+                 <div class="col">
+                <h5>{{movie.name}}</h5>
+                </div>
+                <div class="row">
+
+                <div class="col" style="display: flex; justify-content: center;">
+                    <h5>{% trans 'Премьера'%}: {{movie.premier_date}}</h5>
+                </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+<div class="row" style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
+    <h3>{% trans 'Новости и Акции'%}</h3>
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block carousel_news %}
+<div class="container" style="padding: 0;">
+{%if carousel_news_img%}
+<div id="carousel_news" class="carousel slide">
+    <div class="carousel-inner news-inner">
+
+        {%for item in carousel_news_img%}
+
+        <div class="carousel-item" >
+            <img src="{{item.image.url}}" class="d-block" style="width: 100%;" alt="...">
+        </div>
+
+        {%endfor%}
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel_news" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel_news" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+{%endif%}
+    </div>
+{% endblock %}
+
+
+{%block seo_home%}
+<div class="container" style="background-color: #f4f6f9; border: 2px solid #dee2e6;">
+
+    <div style="display: flex; justify-content: center; margin-top: 2rem; margin-bottom: 2rem;">
+        <img src="{%static 'cinema_app/images/context_banner.png' %}" style="width: 60%;" alt="">
+    </div>
+    <div class="row" style="text-align: center; margin-top: 2rem; margin-bottom: 1rem;">
+        <h5>СЕО текст</h5>
+    </div>
+    <div class="row" style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
+        <div class="col">
+        {{seo_text}}
+        </div>
+
+</div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+    function changeSize(){
+    var header = document.getElementById('header')
+    var footer = document.getElementById('footer')
+
+    header.setAttribute('class', 'container')
+    header.setAttribute('style', 'margin-left: auto; margin-right: auto; background-color: #343a40;')
+
+    footer.setAttribute('class', 'container')
+    footer.setAttribute('style', 'margin-left: auto; margin-right: auto; background-color: #f4f6f9;')
+}
+changeSize()
+
+var carousel = document.getElementById('carousel')
+var carousel_news = document.getElementById('carousel_news')
+
+var item = $('.carousel-inner').children()[0]
+item.setAttribute('class', 'carousel-item active')
+
+var item_news = $('.news-inner').children()[0]
+item_news.setAttribute('class', 'carousel-item active')
+
+
+{% if active %}
+    carousel.setAttribute('data-bs-ride', "carousel")
+    $(document).ready(function() {
+      $('#carousel').carousel({
+        interval: {{interval}},
+      });
+    });
+{%else%}
+    carousel.setAttribute('data-bs-interval', false)
+{%endif%}
+
+{% if active_news %}
+    carousel_news.setAttribute('data-bs-ride', "carousel")
+    $(document).ready(function() {
+      $('#carousel_news').carousel({
+        interval: {{interval_news}},
+      });
+    });
+{%else%}
+    carousel_news.setAttribute('data-bs-interval', false)
+{%endif%}
+
+
+
+</script>
+
+{% endblock %}

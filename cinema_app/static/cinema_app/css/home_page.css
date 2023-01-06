@@ -1,0 +1,11 @@
+.navbar-nav, #phone {
+    background: white;
+}
+#filmCard{
+    width: 100%;
+    height: 400px;
+}
+#filmSoonTxt{
+    font-size: 25px;
+    color: green;
+}

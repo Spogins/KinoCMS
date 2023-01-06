@@ -1,0 +1,53 @@
+{% extends 'admin_app/base.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="row" style="padding: 1rem;">
+        <h3 style="text-align: center;">Пользователи</h3>
+    </div>
+    <div class="content" style="padding: 1rem;">
+        <table id="table" class="table table-striped" style="width:100%">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Дата регистрации</th>
+                <th>День рождения</th>
+                <th>Email</th>
+                <th>Телефон</th>
+                <th>ФИО</th>
+                <th>Псевданим</th>
+                <th>Город</th>
+                <th class="no-sort"></th>
+                <th class="no-sort"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if users %}
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.date_joined }}</td>
+                <td>{{ user.birth_date }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone_number }}</td>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.city }}</td>
+                <td>
+                    <a href="{% url 'show_user_admin' user.id %}" style="display: flex; justify-content: center;">
+                        <img src="/static/admin_app/image/pngegg.png" width="20px" height="20px" alt="">
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'delete_user' user.id %}" style="display: flex; justify-content: center;">
+                        <img src="/static/admin_app/image/remoove.png" width="20px" height="20px" alt="">
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

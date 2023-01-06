@@ -1,0 +1,45 @@
+{% extends 'cinema_app/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<div class="row "
+     style="background-color: #f4f6f9; border: 2px solid #dee2e6; width: 90%; margin-left: auto; margin-right: auto;">
+    {%if fail%}
+    <div class="col" style="display: flex;justify-content: center;">
+        <h1>{{fail}}</h1>
+    </div>
+    {%else%}
+    <div class="col" style="margin-left: 1rem; margin-right: 1rem;">
+        <div class="row" style="display: flex;justify-content: space-around;">
+            {% for film in films %}
+
+            <div class="card" style="width: 18rem; margin-top: 1rem;">
+                <a href="{% url 'film_card' film.id %}" style="
+        display: contents;">
+                    <img src={{film.image.url}} alt="" height="70%" width="100%">
+                </a>
+                <div class="card-body" style="display: flex; flex-direction: column;">
+                    <div class="col">
+                        <h5>{{film.name}}</h5>
+                    </div>
+                    <div class="row">
+
+                        <div class="col" style="display: flex; justify-content: center;">
+                            {% if film.premier_date <= date %}
+                            <a href="{% url 'schedule' %}?film={{film.id}}" class="btn btn-primary">{% trans 'Купить билет'%}</a>
+                            {%else%}
+                            <h5>{% trans 'Премьера'%}: {{film.premier_date}}</h5>
+                            {% endif %}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+    {%endif%}
+</div>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'cinema_app/base.html' %}
+{% load i18n %}
+{% block content %}
+<div class="row " style="background-color: #f4f6f9; border: 2px solid #dee2e6; width: 90%; margin-left: auto; margin-right: auto;">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row" style="margin-top: 2rem;">
+            <div class="col">
+                <div class="row" style="display: flex; justify-content: center; padding: 1rem;">
+
+                    <div class="col-md-2">
+                        <label>{% trans 'Имя'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.first_name}}
+
+                    </div>
+                </div>
+                <div class="row" style="display: flex; justify-content: center; padding: 1rem;">
+                    <div class="col-md-2">
+                        <label>{% trans 'Фамилия'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.last_name}}
+                    </div>
+                </div>
+                <div class="row" style="display: flex; justify-content: center; padding: 1rem;">
+                    <div class="col-md-2">
+                        <label>{% trans 'Никнейм'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.username}}
+                    </div>
+                </div>
+                <div class="row" style="display: flex; justify-content: center; padding: 1rem;">
+                    <div class="col-md-2">
+                        <label>E-mail</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.email}}
+                    </div>
+                </div>
+                <div class="row" style="display: flex; justify-content: center; padding: 1rem;">
+                    <div class="col-md-2">
+                        <label>{% trans 'Адрес'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.address}}
+                    </div>
+                </div>
+                <div class="row" style="display: flex; justify-content: center; padding: 1rem;">
+                    <div class="col-md-2">
+                        <label>{% trans 'Пароль'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.password}}
+
+                        <p style="padding-left: 1rem; color: crimson;">{{form.non_field_errors|striptags}}</p>
+                    </div>
+                </div>
+                <div class="row" style="display: flex; justify-content: center; padding: 1rem;">
+                    <div class="col-md-2">
+                        <label>{% trans 'Номер карты'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.card_number}}
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col">
+
+                <div class="row" style="padding: 1rem; display: flex; justify-content: center; ">
+                    <div class="col-md-2">
+                        <label>{% trans 'Язык'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.language}}
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem; display: flex; justify-content: center;">
+                    <div class="col-md-2">
+                        <label>{% trans 'Пол'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.gender}}
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem; display: flex; justify-content: center;">
+                    <div class="col-md-2">
+                        <label>{% trans 'Телефон'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.phone_number}}
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem; display: flex; justify-content: center;">
+                    <div class="col-md-3">
+                        <label>{% trans 'Дата рождения'%}</label>
+                    </div>
+                    <div class="col-md-3">
+                        {{form.birth_date}}
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem; display: flex; justify-content: center;">
+                    <div class="col-md-2">
+                        <label>{% trans 'Город'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.city}}
+                    </div>
+                </div>
+                <div class="row" style="padding: 1rem; display: flex; justify-content: center;">
+                     <div class="col-md-2">
+                        <label>{% trans 'Повторить пароль'%}</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{form.r_password}}
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="row" style="padding: 5rem; justify-content: space-evenly;">
+            <div class="col-md-3">
+
+                    <button type="submit" class="btn btn-block btn-primary">{% trans 'Обновить и Сохранить'%}</button>
+
+
+            </div>
+            <div class="col-md-3">
+
+                    <button onClick="window.location.reload()" type="button" class="btn btn-block btn-secondary">{% trans 'Вернуть базовую версию'%}</button>
+
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

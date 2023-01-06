@@ -1,0 +1,211 @@
+{% extends 'cinema_app/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<div class="row "
+     style="background-color: #f4f6f9; border: 2px solid #dee2e6; width: 90%; margin-left: auto; margin-right: auto;">
+    <div class="row" style="display: flex; justify-content: center;margin-top:2rem;">
+        <div class="col-md-3"
+             style=" background-color: #343a40; border-radius: 0.5rem; display: flex; color: aliceblue; align-items: center; justify-content: space-between;">
+            {% trans 'Показывать только'%}
+            <div class="icheck-primary d-inline">
+                <input type="checkbox" onclick="get_select_value()" id="type_2d">
+                <label for="type_2d"
+                       style="border-radius: 0.5rem; padding-left: 0.5rem; padding-right: 0.5rem; background-color: #74287d;">
+                    2D
+                </label>
+            </div>
+            <div class="icheck-primary d-inline">
+                <input type="checkbox" onclick="get_select_value()" id="type_3d">
+                <label for="type_3d"
+                       style="border-radius: 0.5rem; padding-left: 0.5rem; padding-right: 0.5rem; background-color: #3f5bcc;">
+                    3D
+                </label>
+            </div>
+            <div class="icheck-primary d-inline">
+                <input type="checkbox" onclick="get_select_value()" id="type_imax">
+                <label for="type_imax"
+                       style="border-radius: 0.5rem; padding-left: 0.5rem; padding-right: 0.5rem; background-color: #3a9eba;">
+                    IMAX
+                </label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <select class="form-select form-cinema" id="select_cinema">
+                <option class="cinema" value="all">{% trans 'Кинотеатр'%}</option>
+                {% for cinema in cinemas %}
+                <option class="cinema_{{cinema.id}}" value="{{cinema.id}}">{{cinema.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <input class="form-select" type="text" name="daterange" value="'{{f_day|date:'Y-m-d'}}'" />
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" id="select_film">
+                <option class="film" value="all">{% trans 'Фильм'%}: {% trans 'все'%}</option>
+                {% for film in films %}
+                <option class="film_{{film.id}}" value="{{film.id}}">{{film.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select class="form-select" id="select_hall" style="display: block;">
+                <option class="hall_all" value="all">{% trans 'Зал'%}: {% trans 'все'%}</option>
+                {% for hall in halls %}
+                <option class="hall_{{hall.id}} cinema_hall {{hall.cinema.id}}" value="{{hall.id}}"
+                        style="display: none;">
+                    {{hall.name}}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div id="schedule" class="col-8" style="margin-left: 3rem; margin-right: 3rem">
+            {% for day in weak %}
+            <div class="col day_table" id="{{day|date:'Y-m-d'}}" style="display: block; margin-top: 2rem;">
+                <div class="day">
+                    <div class="col" style="color: #717171;">
+                        <h6>{{day|date:"d M"}}, {{day|date:"D"}}</h6>
+                    </div>
+                    <div class="col" style="border: solid 5px #586474; border-radius: 0.5rem;">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">{% trans 'Время'%}</th>
+                                <th scope="col">{% trans 'Фильм'%}</th>
+                                <th scope="col">{% trans 'Зал'%}</th>
+                                <th scope="col">{% trans 'Цена'%}</th>
+                                <th scope="col">{% trans 'Бронировать'%}</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table_body">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-2">
+            <div class="row" style="margin-bottom: 5rem; margin-top: 5rem;">
+                <div class="col">
+                    <img style="width: 100%; height: 100%" src="{% static 'cinema_app/images/afisha_cntxt_ads.png' %}"
+                         alt="">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{%block script%}
+<script>
+var startDate = '{{f_day|date:'Y-m-d'}}'
+var endDate = '{{l_day|date:'Y-m-d'}}'
+$(function() {
+  $('input[name="daterange"]').daterangepicker({
+    opens: 'left'
+  }, function(start, end, label) {
+    startDate = start.format('YYYY-MM-DD')
+    endDate = end.format('YYYY-MM-DD')
+  });
+});
+
+
+function get_schedule(content){
+    content.forEach((elem) => {
+
+        var date = $("#"+elem.date+"")
+        if(date[0] && elem.date >= startDate && elem.date <= endDate){
+            var table_body = date.find(".table_body")[0]
+            var time = '<td class="col-1">'+ elem.time +'</td>'
+            var film_name = '<td class="col-2"><a href="/films/'+elem.film_id+'">'+ elem.film_name +'</a></td>'
+            var hall_name = '<td class="col-1">'+ elem.hall_name +'</td>'
+            var price = '<td class="col-1">'+ elem.price +'</td>'
+            var booking = '<td class="col-1"><a style="padding-left: 20%;"href="booking/'+elem.seance+'"><img style="width: 20%; height: 20%" src="{% static 'cinema_app/images/ticket.png' %}"alt=""></a></td>'
+            tr = '<tr>' + time + film_name + hall_name + price + booking + '</tr>'
+            table_body.innerHTML += tr
+        }
+    })
+}
+
+
+$("document").ready(function(){
+    {%if show_film%}
+        $('#select_film').find($('.film_{{show_film}}'))[0].selected = true
+    {%endif%}
+
+    {% if show_cinema %}
+        $('#select_cinema').find($('.cinema_{{show_cinema}}'))[0].selected = true
+    {%endif%}
+
+    {% if show_hall %}
+        $('#select_hall').find($('.hall_{{show_hall}}'))[0].selected = true
+    {%endif%}
+    get_select_value()
+    {% if show_hall %}
+        show_hall({{show_cinema}}, {{show_hall}})
+    {%endif%}
+
+})
+
+$(".form-select").change(function(){
+    get_select_value()
+})
+$(".form-cinema").change(function(){
+
+    var select_cinema=document.getElementById("select_cinema");
+    var select_cinema_val=select_cinema.options[select_cinema.selectedIndex].value;
+    if(select_cinema_val == 'all')
+        show_hall(select_cinema_val, 'all')
+    else
+        show_hall(select_cinema_val)
+    get_select_value()
+})
+
+function showSeance(cinema, film, hall){
+    var type_2d = document.getElementById("type_2d");
+    var type_3d = document.getElementById("type_3d");
+    var type_imax = document.getElementById("type_imax");
+    var data = new FormData();
+    data.append('csrfmiddlewaretoken', '{{csrf_token}}')
+    data.append('cinema_id', cinema)
+    data.append('film_id', film)
+    data.append('hall_id', hall)
+    data.append('type_2d', type_2d.checked)
+    data.append('type_3d', type_3d.checked)
+    data.append('type_imax', type_imax.checked)
+    $.ajax({
+        url: '{% url 'schedule_seances' %}',
+        type: "POST",
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        enctype: 'multipart/form-data',
+        success: function(content){
+            $.each($('.table_body'), (index, value) => {
+                value.innerHTML = ''
+            })
+            get_schedule(content.context)
+            hide_table()
+        }
+    })
+}
+
+
+
+
+
+
+
+
+
+</script>
+{%endblock%}
+<script src="plugins/daterangepicker/daterangepicker.js"></script>

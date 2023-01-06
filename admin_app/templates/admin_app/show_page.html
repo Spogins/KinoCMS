@@ -1,0 +1,21 @@
+{% extends 'admin_app/show_base.html' %}
+
+{% block pages %}
+<div class="col-md-1" style="display: flex; align-items: center; justify-content: center;">
+    <div class="form-check form-switch">
+        {{form.active}}
+        <label>Active</label>
+    </div>
+</div>
+{% endblock %}
+
+{% block page_date %}
+<div class="row" style="padding: 1rem;">
+    <div class="col-md-1">
+        <label>Дата создания</label>
+    </div>
+    <div class="col-md-2">
+        {{form.date}}
+    </div>
+</div>
+{% endblock %}

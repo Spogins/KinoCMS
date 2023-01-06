@@ -1,0 +1,47 @@
+{% extends 'admin_app/base_page.html' %}
+
+{% block movie %}
+
+<div class="row" style="padding: 1rem;">
+    <div class="col-md-2">
+        <label>Ссылка на трейлер</label>
+    </div>
+    <div class="col-md-5">
+        {{form.trailer}}
+    </div>
+</div>
+<div class="row" style="padding: 1rem;">
+    <div class="col-md-1">
+        <label>Тип кино</label>
+    </div>
+    <div class="col-md-1" style="padding-top: 1rem;">
+        <div class="checkbox">
+            {{form.v2d}}
+            <label>
+                2D
+            </label>
+        </div>
+        <div class="checkbox">
+            {{form.v3d}}
+            <label>
+                3D
+            </label>
+        </div>
+        <div class="checkbox">
+            {{form.imax}}
+            <label>
+                IMAX
+            </label>
+        </div>
+    </div>
+</div>
+<div class="row" style="padding: 1rem;">
+    <div class="col-md-1">
+        <label>Дата премьеры</label>
+    </div>
+    <div class="col-md-2">
+        {{form.premier_date}}
+    </div>
+</div>
+
+{% endblock %}

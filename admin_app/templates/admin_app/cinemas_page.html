@@ -1,0 +1,56 @@
+{% extends 'admin_app/base_page.html' %}
+
+{% block cinema_hall %}
+<div class="row" style="padding: 1rem;">
+    <div class="col-md-1">
+        <label>{{terms}}</label>
+    </div>
+    <div style="" class="col-md-5 lan_ru">
+        {{form.terms_ru}}
+    </div>
+    <div style="display:none;" class="col-md-5 lan_uk">
+        {{form.terms_uk}}
+    </div>
+</div>
+<div class="row" style="padding: 1rem; align-items: center;">
+
+    <div class="col-md-1">
+        <label>Фото верхнего баннера</label>
+    </div>
+
+
+    <div class="col-md-2" id="base">
+        <img id='mainBanner' class="null" src="/static/admin_app/image/add_img.png" title="add" alt=""
+             width="100%">
+    </div>
+
+    <div class="col-md-3" style="">
+        <table class="table table-bordered text-center">
+            <tbody>
+            <tr>
+                <td>
+                    {{form.banner_image}}
+                    <button onclick="upload('inputbanner')" type="button" class="btn btn-block btn-default">Загрузить
+                    </button>
+
+                </td>
+                <td>
+                    <button onclick="remove('inputbanner')" type="button" class="btn btn-block btn-default">Удалить
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block hall_list %}
+<div class="album">
+    <div class="row" style="justify-content: center; padding: 3rem;">
+        <div class="col-md-4">
+            <h3 style="text-align: center;">Для добавления залов необходимо сохранить Кинотеатр!</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}

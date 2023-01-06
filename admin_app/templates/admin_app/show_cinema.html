@@ -1,0 +1,102 @@
+{% extends 'admin_app/show_base.html' %}
+
+{% block cinema_hall %}
+<div class="row" style="padding: 1rem;">
+    <div class="col-md-1">
+        <label>{{terms}}</label>
+    </div>
+    <div style="" class="col-md-5 lan_ru">
+        {{form.terms_ru}}
+    </div>
+    <div style="display:none;" class="col-md-5 lan_uk">
+        {{form.terms_uk}}
+    </div>
+</div>
+<div class="row" style="padding: 1rem; align-items: center;">
+
+    <div class="col-md-1">
+        <label>Фото верхнего баннера</label>
+    </div>
+
+
+    <div class="col-md-2">
+        <img id='mainBanner' class="null" src="{{show.banner_image.url}}" title="add" alt=""
+             width="100%">
+    </div>
+
+    <div class="col-md-3" style="">
+        <table class="table table-bordered text-center">
+            <tbody>
+            <tr>
+                <td>
+                    {{form.banner_image}}
+                    <button onclick="upload('inputbanner')" type="button" class="btn btn-block btn-default">
+                        Загрузить
+                    </button>
+
+                </td>
+                <td>
+                    <button onclick="remove('inputbanner')" type="button" class="btn btn-block btn-default">
+                        Удалить
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block hall_list %}
+<div class="album">
+    <div class="row" style="justify-content: center; padding-top: 1rem;">
+        <div class="col-md-3">
+            <h3 style="text-align: center;">Список Залов</h3>
+        </div>
+    </div>
+</div>
+<div class="row" id="news" style="padding: 1rem; ">
+    <div class="row news_param" style="justify-content: center; border-collapse: collapse;">
+        <div class="col-md-3" style="text-align: center; background-color: gainsboro;">
+            <lbel>Название</lbel>
+        </div>
+        <div class="col-md-2" style="text-align: center; background-color: gainsboro;">
+            <lbel>Дата Создания</lbel>
+        </div>
+        <div style="border: none; width: 20px; padding-left: 20px;">
+        </div>
+
+        <div style="border: none; width: 20px; padding-left: 30px;">
+        </div>
+    </div>
+    {% if halls %}
+    {% for elem in halls %}
+    <div class="row news_param" style="justify-content: center;">
+        <div class="col-md-3" style="text-align: center;">
+            <lbel>{{elem.name}}</lbel>
+        </div>
+        <div class="col-md-2" style="text-align: center;">
+            <lbel>{{elem.date}}</lbel>
+        </div>
+        <div style="border: none; width: 20px; padding-left: 20px;">
+            <a href="{% url 'show_hall' show.id elem.id %}">
+                <img src="/static/admin_app/image/pngegg.png" width="20px" height="20px" alt="">
+            </a>
+        </div>
+        <div style="border: none; width: 20px; padding-left: 30px;">
+            <a href="{% url 'delete_hall' show.id elem.id %}">
+                <img src="/static/admin_app/image/remoove.png" width="20px" height="20px" alt="">
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+<div class="row" style="justify-content: center;">
+    <div class="col-md-3">
+        <a href="{% url 'hall_page' show.id %}">
+            <button type="button" class="btn btn-block btn-default">Создать зал</button>
+        </a>
+    </div>
+</div>
+{% endblock %}

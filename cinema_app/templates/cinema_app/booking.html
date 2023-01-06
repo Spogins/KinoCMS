@@ -1,0 +1,273 @@
+{% extends 'cinema_app/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<div class="row" style="background-color: #f4f6f9; border: 2px solid #dee2e6; width: 90%; margin-left: auto;
+      margin-right: auto; display: flex; justify-content: center;">
+    <div class="row" style="padding: 2rem;">
+        <div class="col-2">
+            <div class="row" style="display: flex; flex-direction: column;">
+                <div class="col">
+                    <img style="width: 100%; height: 100%" src="{{film.image.url}}" alt="">
+                </div>
+                <div class="col">
+                    <img style="width: 100%; height: 100%; padding: 1rem;"
+                         src="{% static 'cinema_app/images/booking_ads.png' %}"
+                         alt="">
+                </div>
+            </div>
+
+        </div>
+        <div class="col" style="padding-left: 2rem;">
+            <div class="row">
+                <div class="col-4"
+                     style="text-align: center; color: aliceblue; padding: 0.5rem; background-color: #343a40; border-radius: 2rem;">
+
+                    <h5 style="margin: 0px;">{{film.name}}</h5>
+                </div>
+            </div>
+            <div class="row" style="margin-top:2rem;">
+                <div class="col" style="color: #717171;">
+                    <h5>{{seance.date|date:"d M"}}, {{seance.time}}, {% trans 'Зал'%} №{{seance.hall_name}}</h5>
+                </div>
+            </div>
+            <div class="row" style="margin-top:1rem;">
+                <div class="col" style="display: flex; align-items: center;">
+                    <div class="row">
+                        <div class="col">
+                            <h5 style="margin: 0px;">
+                                {% trans 'Цена' %} В ГРН:
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-left: 2rem;">
+                        <div class="col"
+                             style="padding: 0px; background-color: #fbc253; color: aliceblue; border-radius: 0.25rem;">
+                            <h5 style="margin: 0px; padding: 0.5rem;">
+                                {{seance.ticket_price}}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="display: flex; align-items: center;">
+<!--                    <div class="row">-->
+<!--                        <div class="col">-->
+<!--                            <h5 style="margin: 0px;">-->
+<!--                                Забранированно:-->
+<!--                            </h5>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                </div>
+                <div class="col-1" style="display: flex; align-items: center;">
+                    <div class="row">
+                        <div class="col">
+                            <h6 style="margin:0px">
+                                {% trans 'Ваш заказ'%}:
+                            </h6>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col"
+                     style="border: solid 2px #ffa400; border-radius: 0.25rem; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <span>{% trans 'Билетов'%}:</span>
+                                </div>
+                                <div class="col" style="color: #d42e69;">
+                                    <span id="ticket_ct">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <span>{% trans 'Сумма'%}:</span>
+                                </div>
+                                <div class="col" style="color: #d42e69;">
+                                    <span id="price_sum">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:3rem;">
+
+                <div class="col" style="display: flex;justify-content: center; margin-left: 8%;">
+                    <div style="display:block; width: 70%; border-radius: 40%; border-top: solid 5px; text-align: center;">
+                        <h3 style="margin-top: 1rem;">{% trans 'ЭКРАН'%}</h3>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row" style="margin-top:2rem;">
+                <div class="col" id="hall_scheme" style="margin: 1rem;">
+
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-top:2rem;">
+                <div class="col">
+                    <span>{% trans 'Стоимость услуги бронирования - 3грн. за каждое место'%}.</span>
+                </div>
+            </div>
+            <div class="row" style="margin-top:1rem;">
+                <div class="col">
+                    <span>{% trans 'ЗАБРОНИРОВАННЫЕ БИЛЕТЫ НУЖНО ВЫКУПИТЬ В КАССЕ КИНОТЕАТРА НЕ ПОЗДНЕЕ ЧЕМ ЗА ПОЛ ЧАСА ДО НАЧАЛА СЕАНСА'%}.</span>
+                </div>
+            </div>
+            <div class="row" style=" margin-top:1rem; display: flex;justify-content: center;">
+                {% if request.user.is_authenticated %}
+                <div class="col-2" style="display: flex;justify-content: center;">
+                    <button type="button" onclick="booking('booking')" style="border: solid 1px;" class="btn">
+                        {% trans 'Забронировать'%}
+                    </button>
+                </div>
+                <div class="col-2" style="display: flex;justify-content: center;">
+                    <button type="button" onclick="booking('buy')" style="border: solid 1px;" class="btn btn-success">
+                        {% trans 'Купить'%}
+                    </button>
+                </div>
+                {% else %}
+                <div class="col">
+                    <div class="row" style="display: flex; flex-direction: column; align-content: center;">
+                        <div class="col" style="display: flex; justify-content: center;">
+                            <h5>
+                                {% trans 'Для покупки/бронированния билета необходимо авторизоваться'%}!
+                            </h5>
+                        </div>
+                        <div class="col" style="display: flex; justify-content: center;">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#loginModal">
+                                {% trans 'Войти'%}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+var hall_scheme = {{hall_scheme}}
+var scheme = document.getElementById("hall_scheme");
+var row = ''
+var ct = 0
+for(var x = 0; x < hall_scheme.length; x++){
+    if(x!=3)
+        row += '<div class="row"><div class="col-1" style="display: flex;align-items: center;"><span>РЯД '+(1+x)+'</span></div><div class="col"><div class="row" style="display: flex; justify-content: center;">'
+    else
+        row += '<div class="row" style="margin-top:3rem;"><div class="col-1" style="display: flex;align-items: center;"><span>РЯД '+(1+x)+'</span></div><div class="col"><div class="row" style="display: flex; justify-content: center;">'
+
+    for(var q = 0; q < hall_scheme[x]; q++){
+        row+='<div class="hall_place" onclick="select_place(this)" id="place_'+ct+'" ><div style=""><div>'+ (1+q) +'</div></div></div>'
+        ct++
+    }
+    row += '</div></div></div>'
+}
+scheme.innerHTML = row
+
+function select_place(place){
+    if(place.hasAttribute('style')){
+        place.setAttribute('class', 'hall_place')
+        place.removeAttribute('style')
+    }
+    else {
+        place.setAttribute('class', 'hall_place selected_place')
+        place.setAttribute('style', 'border: solid 2px black;')
+    }
+    order_tickets()
+}
+
+$("document").ready(function(){
+    get_places()
+    var interval = setInterval(() => {get_places()}, 5000)
+
+})
+
+
+function booking(type){
+    var selected_places = []
+    $.each($('.selected_place'), (index, value) => {
+        selected_places.push(value.id)
+    })
+    var data = new FormData();
+    data.append('csrfmiddlewaretoken', '{{csrf_token}}')
+    data.append('selected_place', JSON.stringify(selected_places))
+    data.append('type', type)
+    $.ajax({
+        url: '{% url 'booking_place' seance.id %}',
+        type: "POST",
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        enctype: 'multipart/form-data',
+        success: function(content){
+            console.log(content)
+            get_places()
+        }
+    })
+}
+
+function get_places(){
+    $.ajax({
+        url: '{% url 'booking_place' seance.id %}',
+        type: "GET",
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(content){
+            if(content.reserved.length)
+                content.reserved.forEach((elem) => {
+                    show_place('reserved', elem)
+                })
+            if(content.sold.length)
+                content.sold.forEach((elem) => {
+                    show_place('sold', elem)
+                })
+
+            if(content.no_available.length)
+                content.no_available.forEach((elem) => {
+                    var place = document.getElementById(elem);
+                    place.setAttribute('class', 'sold_place')
+                    place.removeAttribute('onclick')
+                    place.removeAttribute('style')
+                })
+            console.log(content)
+            order_tickets()
+        }
+    })
+}
+
+function show_place(type, place_id){
+    var styles = {
+        reserved: 'reserved_place',
+        sold: 'bought_place',
+    }
+    var place = document.getElementById(place_id);
+    place.setAttribute('class', ''+styles[type]+'')
+    place.removeAttribute('onclick')
+    place.removeAttribute('style')
+}
+
+function order_tickets(){
+    var ct = $('.user_place').length + $('.selected_place').length
+
+    var sum = ct * {{seance.ticket_price}}
+    document.getElementById("ticket_ct").innerHTML = ct
+    document.getElementById("price_sum").innerHTML = sum
+}
+
+</script>
+{% endblock %}
