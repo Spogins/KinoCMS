@@ -47,12 +47,12 @@ ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS').split(' ')
 # Application definition
 
 INSTALLED_APPS = [
-    'modeltranslation',
-    'users.apps.UsersConfig',
-    # General use templates & template tags (should appear first)
+    # # General use templates & template tags (should appear first)
     # 'adminlte3',
     # # Optional: Django admin theme (must be before django.contrib.admin)
     # 'adminlte3_theme',
+    'modeltranslation',
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
