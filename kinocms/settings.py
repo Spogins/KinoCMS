@@ -50,9 +50,9 @@ INSTALLED_APPS = [
     'modeltranslation',
     'users.apps.UsersConfig',
     # General use templates & template tags (should appear first)
-    'adminlte3',
-    # Optional: Django admin theme (must be before django.contrib.admin)
-    'adminlte3_theme',
+    # 'adminlte3',
+    # # Optional: Django admin theme (must be before django.contrib.admin)
+    # 'adminlte3_theme',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
