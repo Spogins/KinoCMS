@@ -24,6 +24,17 @@ FILMS_NAMES = [
 ]
 
 
+def create_seo():
+    seo_block = SeoBlock.objects.create(
+        url='https://www.youtube.com/',
+        title='Title',
+        keywords='Keywords',
+        description=lorem_ru,
+    )
+    seo_block.save()
+    return seo_block.id
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         for num in range(10):
@@ -41,12 +52,10 @@ class Command(BaseCommand):
             )
             if not film.v2d and not film.v3d and not film.imax:
                 film.v2d = True
-            seo_block = SeoBlock.objects.create()
-            seo_block.save()
             gallery = Gallery.objects.create(text=film.name)
             gallery.save()
 
-            film.seo = seo_block
+            film.seo = SeoBlock.objects.get(id=create_seo())
             film.gallery = gallery
             film.save()
             print("Film created")

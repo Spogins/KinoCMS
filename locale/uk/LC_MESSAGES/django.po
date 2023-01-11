@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-29 16:23+0000\n"
+"POT-Creation-Date: 2023-01-11 19:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,103 +21,149 @@ msgstr ""
 "100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
 "(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
-#: cinema_app/templates/cinema_app/base.html:175
+#: cinema_app/templates/cinema_app/base.html:174
 msgid "Вход"
 msgstr "Вхід"
 
-#: cinema_app/templates/cinema_app/base.html:199
-#: cinema_app/templates/cinema_app/base.html:247
+#: cinema_app/templates/cinema_app/base.html:187
+msgid "Вход в аккаунт"
+msgstr "Вхід до облікового запису"
+
+#: cinema_app/templates/cinema_app/base.html:197
+#: cinema_app/templates/cinema_app/base.html:245
 #: cinema_app/templates/cinema_app/show_user.html:29
 msgid "Никнейм"
 msgstr "Нікнейм"
 
-#: cinema_app/templates/cinema_app/base.html:203
+#: cinema_app/templates/cinema_app/base.html:201
 msgid "Имя пользователя..."
 msgstr "Ім'я користувача"
 
-#: cinema_app/templates/cinema_app/base.html:222
-#: cinema_app/templates/cinema_app/base.html:278
+#: cinema_app/templates/cinema_app/base.html:220
+#: cinema_app/templates/cinema_app/base.html:276
 #: cinema_app/templates/cinema_app/show_user.html:53
 msgid "Пароль"
 msgstr "Пароль"
 
-#: cinema_app/templates/cinema_app/base.html:227
+#: cinema_app/templates/cinema_app/base.html:225
 msgid "Пароль..."
 msgstr "Пароль..."
 
-#: cinema_app/templates/cinema_app/base.html:255
+#: cinema_app/templates/cinema_app/base.html:253
 msgid "Email-адресс"
 msgstr "Email-адреса"
 
-#: cinema_app/templates/cinema_app/base.html:287
+#: cinema_app/templates/cinema_app/base.html:285
 msgid "Подтвердить пароль"
 msgstr "Підтвердити пароль"
 
-#: cinema_app/templates/cinema_app/base.html:313
+#: cinema_app/templates/cinema_app/base.html:311
 msgid "Отмена"
 msgstr "Скасування"
 
-#: cinema_app/templates/cinema_app/base.html:317
+#: cinema_app/templates/cinema_app/base.html:315
 msgid "Назад"
 msgstr "Назад"
 
-#: cinema_app/templates/cinema_app/base.html:323
+#: cinema_app/templates/cinema_app/base.html:321
 msgid "Регистрация"
 msgstr "Реєстрація"
 
-#: cinema_app/templates/cinema_app/base.html:352
+#: cinema_app/templates/cinema_app/base.html:326
+msgid "Зарегистрировать аккаунт"
+msgstr "Зареєструвати обліковий запис"
+
+#: cinema_app/templates/cinema_app/base.html:328
+msgid "Войти в аккаунт"
+msgstr "Увійти обліковий запис"
+
+#: cinema_app/templates/cinema_app/base.html:348
 msgid "Меню"
 msgstr "Меню"
 
-#: cinema_app/templates/cinema_app/base.html:362
-#: cinema_app/templates/cinema_app/base.html:483
+#: cinema_app/templates/cinema_app/base.html:358
+#: cinema_app/templates/cinema_app/base.html:473
 #: cinema_app/templates/cinema_app/films.html:16
 #: cinema_app/templates/cinema_app/soon.html:16
 msgid "Афиша"
 msgstr "Афіша"
 
-#: cinema_app/templates/cinema_app/base.html:368
-#: cinema_app/templates/cinema_app/base.html:486
+#: cinema_app/templates/cinema_app/base.html:364
+#: cinema_app/templates/cinema_app/base.html:475
 msgid "Расписание"
 msgstr "Розклад"
 
-#: cinema_app/templates/cinema_app/base.html:374
+#: cinema_app/templates/cinema_app/base.html:370
 #: cinema_app/templates/cinema_app/films.html:20
 #: cinema_app/templates/cinema_app/soon.html:20
 msgid "Скоро"
 msgstr "Незабаром"
 
-#: cinema_app/templates/cinema_app/base.html:380
+#: cinema_app/templates/cinema_app/base.html:376
+#: cinema_app/templates/cinema_app/base.html:478
 msgid "Кинотеатры"
 msgstr "Кінотеатри"
 
-#: cinema_app/templates/cinema_app/base.html:386
+#: cinema_app/templates/cinema_app/base.html:382
+#: cinema_app/templates/cinema_app/base.html:479
 msgid "Акции"
 msgstr "Акції"
 
-#: cinema_app/templates/cinema_app/base.html:393
+#: cinema_app/templates/cinema_app/base.html:389
 msgid "Информация"
 msgstr "Інформація"
 
-#: cinema_app/templates/cinema_app/base.html:467
-msgid "Мобильные приложения"
-msgstr "Мобільні додатки"
+#: cinema_app/templates/cinema_app/base.html:393
+#: cinema_app/templates/cinema_app/base.html:484
+#: cinema_app/templates/cinema_app/cinema_card.html:113
+msgid "О Кинотеатре"
+msgstr "Про кінотеатр"
 
-#: cinema_app/templates/cinema_app/base.html:502
+#: cinema_app/templates/cinema_app/base.html:396
+#: cinema_app/templates/cinema_app/base.html:485
+msgid "Новости"
+msgstr "Новини"
+
+#: cinema_app/templates/cinema_app/base.html:399
+#: cinema_app/templates/cinema_app/base.html:486
 msgid "Реклама"
 msgstr "Реклама"
 
-#: cinema_app/templates/cinema_app/base.html:503
+#: cinema_app/templates/cinema_app/base.html:401
+#, fuzzy
+#| msgid "Кафе бар"
+msgid "Кафе-бар"
+msgstr "Кафе-бар"
+
+#: cinema_app/templates/cinema_app/base.html:403
+msgid "Вип зал"
+msgstr "Віп зал"
+
+#: cinema_app/templates/cinema_app/base.html:404
+#: cinema_app/templates/cinema_app/base.html:489
+msgid "Детская комната"
+msgstr "Дитяча кімната"
+
+#: cinema_app/templates/cinema_app/base.html:407
+#: cinema_app/templates/cinema_app/base.html:490
+msgid "Контакты"
+msgstr "Контакти"
+
+#: cinema_app/templates/cinema_app/base.html:458
+msgid "Мобильные приложения"
+msgstr "Мобільні додатки"
+
+#: cinema_app/templates/cinema_app/base.html:476
+msgid "Скоро в проекате"
+msgstr "Незабаром у прокаті"
+
+#: cinema_app/templates/cinema_app/base.html:487
 msgid "Вип-зал"
 msgstr "Віп-зал"
 
-#: cinema_app/templates/cinema_app/base.html:504
+#: cinema_app/templates/cinema_app/base.html:488
 msgid "Кафе бар"
 msgstr "Кафе-бар"
-
-#: cinema_app/templates/cinema_app/base.html:508
-msgid "Контакты"
-msgstr "Контакти"
 
 #: cinema_app/templates/cinema_app/booking.html:31
 #: cinema_app/templates/cinema_app/cinema_card.html:31
@@ -197,10 +243,6 @@ msgstr "Сеанс"
 msgid "Расписание сеансов"
 msgstr "Розклад сеансів"
 
-#: cinema_app/templates/cinema_app/cinema_card.html:113
-msgid "О Кинотеатре"
-msgstr "Про кінотеатр"
-
 #: cinema_app/templates/cinema_app/cinema_card.html:125
 msgid "Условия"
 msgstr "Умови"
@@ -220,6 +262,7 @@ msgstr "Розклад сеансів кінотеатру"
 #: cinema_app/templates/cinema_app/film_card.html:96
 #: cinema_app/templates/cinema_app/films.html:57
 #: cinema_app/templates/cinema_app/home.html:55
+#: cinema_app/templates/cinema_app/search.html:29
 #: cinema_app/templates/cinema_app/soon.html:53
 msgid "Купить билет"
 msgstr "Купити квиток"
@@ -229,7 +272,7 @@ msgid "Смотрите скоро"
 msgstr "Дивіться незабаром"
 
 #: cinema_app/templates/cinema_app/home.html:86
-#: cinema_app/templates/cinema_app/search.html:32
+#: cinema_app/templates/cinema_app/search.html:31
 msgid "Премьера"
 msgstr "Прем'єра"
 
@@ -310,32 +353,6 @@ msgstr "Оновити та зберегти"
 #: cinema_app/templates/cinema_app/show_user.html:138
 msgid "Вернуть базовую версию"
 msgstr "Повернути базову версію"
-
-#~ msgid "Вход в аккаунт"
-#~ msgstr "Вхід до облікового запису"
-
-#~ msgid "Зарегистрировать аккаунт"
-#~ msgstr "Зареєструвати обліковий запис"
-
-#~ msgid "Войти в аккаунт"
-#~ msgstr "Увійти обліковий запис"
-
-#~ msgid "Новости"
-#~ msgstr "Новини"
-
-#, fuzzy
-#~| msgid "Кафе бар"
-#~ msgid "Кафе-бар"
-#~ msgstr "Кафе-бар"
-
-#~ msgid "Вип зал"
-#~ msgstr "Віп зал"
-
-#~ msgid "Детская комната"
-#~ msgstr "Дитяча кімната"
-
-#~ msgid "Скоро в проекате"
-#~ msgstr "Незабаром у прокаті"
 
 #~ msgid "Дата"
 #~ msgstr "Дата"

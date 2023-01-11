@@ -65,12 +65,13 @@
                 </div>
                 <div class="col">
                     <div class="row" style="display: flex; align-items: center;">
-                        <div class="col-md-3">
+                        <div class="col">
                             <form action="{% url 'search' %}" style="display: flex; align-items: center;" method="get">
-
+                                <div class="col-10">
                                 <input type="search" name="search" class="form-control form-control-lg" placeholder="Поиск"
                                        height="25px"
                                        style="width: 100%; height: 50px">
+                                    </div>
                                 <div class="col-1">
                                     <button type="submit" class="btn" style="background-color: aliceblue;">GO</button>
                                 </div>
@@ -184,7 +185,7 @@
                                 <div class="modal-dialog " id="modalSize">
                                     <div class="modal-content" style="background-color: #343a40; color: aliceblue;">
                                         <div class="modal-header" style="border-color: #586474;">
-                                            <h1 class="modal-title fs-5" id="loginModalLabel">{% trans 'Вход в аккаунт'%}</h1>
+                                            <h1 class="modal-title fs-5" id="loginModalLabel">{% trans 'Вход'%}</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                         </div>
@@ -325,7 +326,7 @@
                                                 <button type="button" id="regiBtn" style="display: none;"
                                                         class="btn btn-primary register">{% trans 'Зарегистрировать аккаунт'%}
                                                 </button>
-                                                <button type="button" id="logiBtn" class="btn btn-primary login">{% trans 'Войти в аккаунт'%}
+                                                <button type="button" id="logiBtn" class="btn btn-primary login">{% trans 'Войти'%}
                                                 </button>
                                             </div>
 
@@ -389,9 +390,11 @@
                                                     {% trans 'Информация'%}
                                                 </a>
                                                 <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="/info/cinema">{% trans 'О Кинотеатре'%}</a>
+                                                    <li>
+                                                        <a class="dropdown-item" href="/info/cinema">{% trans 'О Кинотеатре'%}</a>
                                                     </li>
-                                                    <li><a class="dropdown-item" href="{%url 'news_page'%}">{% trans 'Новости'%}</a>
+                                                    <li>
+                                                        <a class="dropdown-item" href="{%url 'news_page'%}">{% trans 'Новости'%}</a>
                                                     </li>
 
                                                     <li><a class="dropdown-item" href="/info/adv">{% trans 'Реклама' %}</a></li>

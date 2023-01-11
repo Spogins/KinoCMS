@@ -39,6 +39,17 @@ page_type = {
 }
 
 
+def create_seo():
+    seo_block = SeoBlock.objects.create(
+        url='https://www.youtube.com/',
+        title='Title',
+        keywords='Keywords',
+        description=lorem_ru,
+    )
+    seo_block.save()
+    return seo_block.id
+
+
 def create_page(name):
     print(f'Создание Page.{name}...')
     page = Page.objects.create(
@@ -51,11 +62,9 @@ def create_page(name):
         date=now().date(),
         image='#'
     )
-    seo_block = SeoBlock.objects.create()
-    seo_block.save()
     gallery = Gallery.objects.create()
     gallery.save()
-    page.seo = SeoBlock.objects.get(id=seo_block.id)
+    page.seo = SeoBlock.objects.get(id=create_seo())
     page.gallery = Gallery.objects.get(id=gallery.id)
     page.save()
     print(f'Page.{name} Создан.')
@@ -132,12 +141,10 @@ def create_films():
             )
             if not film.v2d and not film.v3d and not film.imax:
                 film.v2d = True
-            seo_block = SeoBlock.objects.create()
-            seo_block.save()
             gallery = Gallery.objects.create(text=film.name)
             gallery.save()
 
-            film.seo = seo_block
+            film.seo = SeoBlock.objects.get(id=create_seo())
             film.gallery = gallery
             film.save()
             print("Film created")
@@ -168,11 +175,9 @@ def create_news_events():
                     video='https://www.youtube.com/',
                     active=True,
                 )
-                seo_block = SeoBlock.objects.create()
-                seo_block.save()
                 gallery = Gallery.objects.create(text=obj.name)
                 gallery.save()
-                obj.seo = seo_block
+                obj.seo = SeoBlock.objects.get(id=create_seo())
                 obj.gallery = gallery
                 obj.save()
                 print(f"{_page_type[_type]['name_ru']} {num} created")
@@ -196,11 +201,9 @@ def create_cinema_and_halls():
                 terms_ru=lorem_ru,
                 terms_uk=lorem_uk,
             )
-            seo_block = SeoBlock.objects.create()
-            seo_block.save()
             gallery = Gallery.objects.create(text=cinema.name)
             gallery.save()
-            cinema.seo = seo_block
+            cinema.seo = SeoBlock.objects.get(id=create_seo())
             cinema.gallery = gallery
             cinema.save()
             for hall_num in range(3):
@@ -214,11 +217,9 @@ def create_cinema_and_halls():
                 )
                 hall_scheme(hall.scheme_file, hall.id)
                 hall.cinema = cinema
-                seo_block = SeoBlock.objects.create()
-                seo_block.save()
                 gallery = Gallery.objects.create(text=hall.name)
                 gallery.save()
-                hall.seo = seo_block
+                hall.seo = SeoBlock.objects.get(id=create_seo())
                 hall.gallery = gallery
                 hall.save()
                 print("Hall created")
@@ -297,18 +298,14 @@ class Command(BaseCommand):
                 seo_text_ru=lorem_ru,
                 seo_text_uk=lorem_uk
             )
-            seo_block = SeoBlock.objects.create()
-            seo_block.save()
-            home_page.seo = SeoBlock.objects.get(id=seo_block.id)
+            home_page.seo = SeoBlock.objects.get(id=create_seo())
             home_page.save()
             print('HomePage Создан.')
 
         if not Contact.objects.all():
             print('Создание Contact...')
             contact_page = Contact.objects.create()
-            seo_block = SeoBlock.objects.create()
-            seo_block.save()
-            contact_page.seo = SeoBlock.objects.get(id=seo_block.id)
+            contact_page.seo = SeoBlock.objects.get(id=create_seo())
             contact_page.save()
             cinema_contact = CinemaContact.objects.create(
                 name='Кинотеатр "Звездный"',

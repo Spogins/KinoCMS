@@ -170,7 +170,8 @@ def soon(request):
 
 def schedule(request):
     _cinemas = Cinema.objects.all()
-    _films = Film.objects.all()
+    _films = Film.objects.filter(premier_date__lte=now().date())
+
     halls = Hall.objects.all()
     _seances = Seance.objects.all()
     print(_seances[0].date)

@@ -133,30 +133,32 @@ function get_schedule(content){
         }
     })
 }
-
+var ready = false
+$(".form-select").change(function(){
+    if(ready)
+        get_select_value()
+})
 
 $("document").ready(function(){
     {%if show_film%}
-        $('#select_film').find($('.film_{{show_film}}'))[0].selected = true
+    $('#select_film').find($('.film_{{show_film}}'))[0].selected = true;
     {%endif%}
 
     {% if show_cinema %}
-        $('#select_cinema').find($('.cinema_{{show_cinema}}'))[0].selected = true
+    $('#select_cinema').find($('.cinema_{{show_cinema}}'))[0].selected = true;
     {%endif%}
 
     {% if show_hall %}
-        $('#select_hall').find($('.hall_{{show_hall}}'))[0].selected = true
+    $('#select_hall').find($('.hall_{{show_hall}}'))[0].selected = true;
     {%endif%}
     get_select_value()
     {% if show_hall %}
         show_hall({{show_cinema}}, {{show_hall}})
     {%endif%}
-
+    ready = true
 })
 
-$(".form-select").change(function(){
-    get_select_value()
-})
+
 $(".form-cinema").change(function(){
 
     var select_cinema=document.getElementById("select_cinema");
@@ -197,7 +199,20 @@ function showSeance(cinema, film, hall){
         }
     })
 }
+function get_select_value(){
+    var select_cinema=document.getElementById("select_cinema");
+    var select_film=document.getElementById("select_film");
+    var select_hall=document.getElementById("select_hall");
 
+    var select_cinema_val=select_cinema.options[select_cinema.selectedIndex].value;
+    var select_film_val=select_film.options[select_film.selectedIndex].value;
+    var select_hall_val=select_hall.options[select_hall.selectedIndex].value;
+    console.log(select_film_val)
+
+    show_hall(select_cinema_val, select_hall_val)
+
+    showSeance(select_cinema_val, select_film_val, select_hall_val)
+}
 
 
 
